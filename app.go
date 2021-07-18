@@ -21,6 +21,7 @@ func main() {
 		v1 := apiEngine.Group("/v1")
 
 		routers.UserRoutes(v1)
+		routers.TransactionRoutes(v1)
 	}
 	r.router.Run(":3000")
 }
