@@ -15,7 +15,7 @@ func UserRoutes(rg *gin.RouterGroup) {
 		user.GET("/:user_id", handlers.GetUser)
 		user.GET("/:user_id/transactions")
 		user.GET("/:user_id/transactions/:transaction_id")
-		user.GET("/:user_id/payments")
+		user.GET("/:user_id/payments", handlers.GetUserPayments)
 		user.GET("/:user_id/pendingOrders")
 		user.POST("/", handlers.AddUser)
 		user.PUT("/:user_id", handlers.UpdateUser)

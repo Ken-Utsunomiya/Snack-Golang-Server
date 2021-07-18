@@ -23,6 +23,8 @@ func main() {
 		routers.UserRoutes(v1)
 		routers.TransactionRoutes(v1)
 		routers.SuggestionRoutes(v1)
+		routers.PaymentRoutes(v1)
 	}
+
 	r.router.Run(":3000")
 }
