@@ -25,6 +25,7 @@ func main() {
 		routers.SuggestionRoutes(v1)
 		routers.PaymentRoutes(v1)
 		routers.SnackRoutes(v1)
+		routers.SnackBatchRoutes(v1)
 	}
 
 	r.router.Run(":3000")
