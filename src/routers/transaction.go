@@ -1,8 +1,9 @@
 package routers
 
 import (
-	"Snack-Golang-Server/src/handlers"
 	"github.com/gin-gonic/gin"
+
+	"Snack-Golang-Server/src/handlers"
 )
 
 func TransactionRoutes(rg *gin.RouterGroup) {
