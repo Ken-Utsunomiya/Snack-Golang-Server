@@ -20,7 +20,14 @@ func main() {
 	{
 		v1 := apiEngine.Group("/v1")
 
+		routers.AuthenticationRoutes(v1)
 		routers.UserRoutes(v1)
+		routers.TransactionRoutes(v1)
+		routers.SuggestionRoutes(v1)
+		routers.PaymentRoutes(v1)
+		routers.SnackRoutes(v1)
+		routers.SnackBatchRoutes(v1)
 	}
+
 	r.router.Run(":3000")
 }
