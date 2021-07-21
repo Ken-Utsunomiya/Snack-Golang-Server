@@ -1,23 +1,24 @@
 package database
 
 import (
+	"Snack-Golang-Server/src/models"
 	"Snack-Golang-Server/src/utils"
 	"database/sql"
-	"fmt"
+	"github.com/lib/pq"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"log"
 )
 
 func Init() *gorm.DB {
-	dbHost := utils.GetEnvVariable("DB_HOST")
-	dbUser := utils.GetEnvVariable("DB_USERID")
-	dbName := utils.GetEnvVariable("DB_NAME")
-	dbPassword := utils.GetEnvVariable("DB_PASSWORD")
-	dbPort := utils.GetEnvVariable("PORT")
+	dbUri := utils.GetEnvVariable("DB_URI")
+	connection, err := pq.ParseURL(dbUri)
+	if err != nil {
+		log.Fatalf("Connection error")
+	}
+	connection += " sslmode=require"
 
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=", dbHost, dbUser, dbPassword, dbName, dbPort)
-	sqlDB, sqlErr := sql.Open("postgres", dsn)
+	sqlDB, sqlErr := sql.Open("postgres", connection)
 	if sqlErr != nil {
 		log.Fatalf("Error opening sql database")
 	}
@@ -33,4 +34,15 @@ func Init() *gorm.DB {
 	}
 
 	return gormDB
+}
+
+func AutoMigrate(db *gorm.DB) {
+	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&models.Snack{})
+	db.AutoMigrate(&models.SnackBatch{})
+	db.AutoMigrate(&models.SnackType{})
+	db.AutoMigrate(&models.Suggestion{})
+	db.AutoMigrate(&models.Transaction{})
+	db.AutoMigrate(&models.TransactionType{})
+	db.AutoMigrate(&models.Payment{})
 }

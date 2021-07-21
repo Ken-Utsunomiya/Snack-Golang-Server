@@ -1,6 +1,8 @@
 package main
 
 import (
+	"Snack-Golang-Server/src/database"
+	"fmt"
 	"github.com/gin-gonic/gin"
 
 	"Snack-Golang-Server/src/routers"
@@ -28,6 +30,10 @@ func main() {
 		routers.SnackRoutes(v1)
 		routers.SnackBatchRoutes(v1)
 	}
+
+	db := database.Init()
+	fmt.Println(db)
+	//database.AutoMigrate(db)
 
 	r.router.Run(":3000")
 }
