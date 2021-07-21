@@ -37,12 +37,12 @@ func Init() *gorm.DB {
 }
 
 func AutoMigrate(db *gorm.DB) {
-	db.AutoMigrate(&models.User{})
-	db.AutoMigrate(&models.Snack{})
-	db.AutoMigrate(&models.SnackBatch{})
-	db.AutoMigrate(&models.SnackType{})
-	db.AutoMigrate(&models.Suggestion{})
-	db.AutoMigrate(&models.Transaction{})
-	db.AutoMigrate(&models.TransactionType{})
+	//db.AutoMigrate(&models.User{})
+	//db.AutoMigrate(&models.Snack{})
+	//db.AutoMigrate(&models.SnackBatch{})
+	//db.AutoMigrate(&models.SnackType{})
+	//db.AutoMigrate(&models.Suggestion{})
+	//db.AutoMigrate(&models.Transaction{})
+	//db.AutoMigrate(&models.TransactionType{})
 	db.AutoMigrate(&models.Payment{})
 }
