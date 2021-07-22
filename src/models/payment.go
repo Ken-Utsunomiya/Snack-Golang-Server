@@ -10,3 +10,7 @@ type Payment struct {
 	PaymentDTM time.Time `json:"paymentDTM" gorm:"not null"`
 	CreatedBy string `json:"CreatedBy" gorm:"not null"`
 }
+
+func (Payment) TableName() string {
+	return "payments"
+}
