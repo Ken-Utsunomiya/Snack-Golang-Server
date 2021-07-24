@@ -1,10 +1,16 @@
 package models
 
-import "github.com/golang/protobuf/ptypes/timestamp"
+import (
+	"time"
+)
 
 type Suggestion struct {
-	SuggestionId int `json:"suggestionId"`
-	SuggestedBy string `json:"suggestedBy"`
-	SuggestionText string `json:"suggestionText"`
-	SuggestionDTM timestamp.Timestamp `json:"suggestionDTM"`
+	ID 						 uint 		 `gorm:"column:suggestion_id;primaryKey;not null"`
+	SuggestedBy 	 string 	 `gorm:"column:suggested_by;not null"`
+	SuggestionText string 	 `gorm:"column:suggestion_text;not null"`
+	SuggestionDTM  time.Time `gorm:"column:suggestion_dtm;not null"`
+}
+
+func (Suggestion) TableName() string {
+	return "suggestions"
 }

@@ -1,10 +1,16 @@
 package models
 
-import "github.com/golang/protobuf/ptypes/timestamp"
+import (
+	"time"
+)
 
 type Payment struct {
-	PaymentId int `json:"paymentId"`
-	PaymentAmount int `json:"paymentAmount"`
-	PaymentDTM timestamp.Timestamp `json:"paymentDTM"`
-	CreatedBy string `json:"CreatedBy"`
+	ID 						uint 			`gorm:"column:payment_id;primaryKey;autoIncrement;not null"`
+	PaymentAmount uint 			`gorm:"column:payment_amount;not null"`
+	PaymentDTM 		time.Time `gorm:"column:payment_dtm;not null"`
+	CreatedBy 		string 		`gorm:"column:created_by;not null;size:128"`
+}
+
+func (Payment) TableName() string {
+	return "payments"
 }
