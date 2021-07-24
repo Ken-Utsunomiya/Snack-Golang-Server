@@ -15,3 +15,7 @@ type Snack struct {
 	LastUpdatedDTM time.Time `gorm:"column:last_updated_dtm;not null"`
 	LastUpdatedBy  string    `gorm:"column:last_updated_by;not null;size:128"`
 }
+
+func (Snack) TableName() string {
+	return "snacks"
+}
