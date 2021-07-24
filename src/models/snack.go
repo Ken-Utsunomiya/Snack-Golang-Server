@@ -8,7 +8,7 @@ type Snack struct {
 	ID 			       uint 		 `gorm:"column:snack_id;primaryKey;autoIncrement"`
 	Name           string 	 `gorm:"column:snack_name;unique;not null;size:128"`
 	Description    string    `gorm:"column:description;not null;size:128"`
-	ImageURI       string    `gorm:"column:image_uri;not null;size:128"`
+	ImageURI       string    `gorm:"column:image_uri;not null"`
 	Price          uint 		 `gorm:"column:price;not null"`
 	IsActive       bool 	   `gorm:"column:is_active;not null"`
 	OrderThreshold uint 		 `gorm:"column:order_threshold"`
