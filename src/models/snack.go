@@ -1,15 +1,17 @@
 package models
 
-import "github.com/golang/protobuf/ptypes/timestamp"
+import (
+	"time"
+)
 
 type Snack struct {
-	SnackId int `json:"snackId"`
-	SnackName string `json:"snackName"`
-	Description string `json:"description"`
-	ImageURI string `json:"imageURI"`
-	Price int `json:"price"`
-	IsActive bool `json:"isActive"`
-	OrderThreshold int `json:"orderThreshold"`
-	LastUpdatedDTM timestamp.Timestamp `json:"LastUpdatedDTM"`
-	LastUpdatedBy string `json:"LastUpdatedBy"`
+	ID 			       uint 		 `gorm:"column:snack_id;primaryKey;autoIncrement"`
+	Name           string 	 `gorm:"column:snack_name;unique;not null;size:128"`
+	Description    string    `gorm:"column:description;not null;size:128"`
+	ImageURI       string    `gorm:"column:image_uri;not null;size:128"`
+	Price          uint 		 `gorm:"column:price;not null"`
+	IsActive       bool 	   `gorm:"column:is_active;not null"`
+	OrderThreshold uint 		 `gorm:"column:order_threshold"`
+	LastUpdatedDTM time.Time `gorm:"column:last_updated_dtm;not null"`
+	LastUpdatedBy  string    `gorm:"column:last_updated_by;not null;size:128"`
 }
