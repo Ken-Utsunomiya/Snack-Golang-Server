@@ -5,10 +5,10 @@ import (
 )
 
 type Payment struct {
-	PaymentId int `json:"paymentId" gorm:"primaryKey;autoIncrement;not null"`
-	PaymentAmount int `json:"paymentAmount" gorm:"not null"`
-	PaymentDTM time.Time `json:"paymentDTM" gorm:"not null"`
-	CreatedBy string `json:"CreatedBy" gorm:"not null"`
+	ID 						uint 			`gorm:"column:payment_id;primaryKey;autoIncrement;not null"`
+	PaymentAmount uint 			`gorm:"column:payment_amount;not null"`
+	PaymentDTM 		time.Time `gorm:"column:payment_dtm;not null"`
+	CreatedBy 		string 		`gorm:"column:created_by;not null;size:128"`
 }
 
 func (Payment) TableName() string {
