@@ -5,7 +5,7 @@ import (
 )
 
 type Transaction struct {
-	ID 						 		uint 			`gorm:"column:transaction_id;not null"`
+	ID 						 		uint 			`gorm:"column:transaction_id;primaryKey;not null"`
 	SnackName 				string 		`gorm:"column:snack_name;not null;size:128"`
 	TransactionAmount uint 			`gorm:"column:transaction_amount;not null"`
 	Quantity 					uint 			`gorm:"column:quantity;not null"`
