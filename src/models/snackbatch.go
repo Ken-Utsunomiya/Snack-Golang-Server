@@ -1,9 +1,15 @@
 package models
 
-import "github.com/golang/protobuf/ptypes/timestamp"
+import (
+	"time"
+)
 
 type SnackBatch struct {
-	SnackBatchId int `json:"snackBatchId"`
-	Quantity int `json:"quantity"`
-	ExpirationDTM timestamp.Timestamp `json:"expirationDTM"`
+	ID 						uint 			`gorm:"column:snack_batch_id;not null"`
+	Quantity 			uint 			`gorm:"column:quantity;not null"`
+	ExpirationDTM time.Time `gorm:"column:expiration_dtm"`
+}
+
+func (SnackBatch) TableName() string {
+	return "snack_batches"
 }
