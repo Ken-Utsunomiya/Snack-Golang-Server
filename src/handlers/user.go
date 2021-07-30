@@ -5,28 +5,28 @@ import (
 	"net/http"
 )
 
-func GetUsers(c *gin.Context) {
+func UserList(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"message": "GetUsers",
+		"message": "UserList",
 	})
 }
 
-func GetUser(c *gin.Context) {
+func UserRetrieve(c *gin.Context) {
 
 }
 
-func GetUsersCommon(c *gin.Context) {
+func UserCommonList(c *gin.Context) {
 
 }
 
-func AddUser(c *gin.Context) {
+func UserCreate(c *gin.Context) {
 
 }
 
-func UpdateUser(c *gin.Context) {
+func UserUpdate(c *gin.Context) {
 
 }
 
-func DeleteUser(c *gin.Context) {
+func UserDelete(c *gin.Context) {
 
 }

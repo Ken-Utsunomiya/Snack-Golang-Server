@@ -10,15 +10,15 @@ func UserRoutes(rg *gin.RouterGroup) {
 
 	user := rg.Group("/users")
 	{
-		user.GET("/", handlers.GetUsers)
-		user.GET("/common", handlers.GetUsersCommon)
-		user.GET("/:user_id", handlers.GetUser)
+		user.GET("/", handlers.UserList)
+		user.GET("/common", handlers.UserCommonList)
+		user.GET("/:user_id", handlers.UserRetrieve)
 		user.GET("/:user_id/transactions", handlers.UserTransactionList)
 		user.GET("/:user_id/transactions/:transaction_id", handlers.UserTransactionRetrieve)
 		user.GET("/:user_id/payments", handlers.UserPaymentList)
 		user.GET("/:user_id/pendingOrders", handlers.PendingOrderList)
-		user.POST("/", handlers.AddUser)
-		user.PUT("/:user_id", handlers.UpdateUser)
-		user.DELETE("/:user_id", handlers.DeleteUser)
+		user.POST("/", handlers.UserCreate)
+		user.PUT("/:user_id", handlers.UserUpdate)
+		user.DELETE("/:user_id", handlers.UserDelete)
 	}
 }
