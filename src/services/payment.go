@@ -4,7 +4,7 @@ import "Snack-Golang-Server/src/models"
 
 type PaymentService struct {}
 
-func (PaymentService) GetUserPaymentList() []models.Snack {
+func (PaymentService) GetUserPaymentList() []models.Payment {
 	return nil
 }
 
