@@ -10,6 +10,12 @@ import (
 	"log"
 )
 
+type Database struct {
+	*gorm.DB
+}
+
+var DB *gorm.DB
+
 func Init() *gorm.DB {
 	dbUri := utils.GetEnvVariable("DB_URI")
 	connection, err := pq.ParseURL(dbUri)
@@ -33,7 +39,8 @@ func Init() *gorm.DB {
 		log.Fatalf("Error opening gorm database")
 	}
 
-	return gormDB
+	DB = gormDB
+	return DB
 }
 
 func AutoMigrate(db *gorm.DB) {
@@ -45,4 +52,8 @@ func AutoMigrate(db *gorm.DB) {
 	db.AutoMigrate(&models.Transaction{})
 	db.AutoMigrate(&models.TransactionType{})
 	db.AutoMigrate(&models.Payment{})
+}
+
+func GetDB() *gorm.DB {
+	return DB
 }
