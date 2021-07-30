@@ -2,14 +2,14 @@ package handlers
 
 import "github.com/gin-gonic/gin"
 
-func GetUserPayments(c *gin.Context) {
+func UserPaymentList(c *gin.Context) {
 
 }
 
-func AddPayment(c *gin.Context) {
+func PaymentCreate(c *gin.Context) {
 
 }
 
-func AddPaymentAll(c *gin.Context) {
+func PaymentAllCreate(c *gin.Context) {
 
 }

@@ -9,7 +9,7 @@ func PaymentRoutes(rg *gin.RouterGroup) {
 
 	payment := rg.Group("/payments")
 	{
-		payment.POST("/", handlers.AddPayment)
-		payment.POST("/all", handlers.AddPaymentAll)
+		payment.POST("/", handlers.PaymentCreate)
+		payment.POST("/all", handlers.PaymentAllCreate)
 	}
 }
