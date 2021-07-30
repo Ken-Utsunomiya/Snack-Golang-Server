@@ -9,9 +9,9 @@ func SnackRoutes(rg *gin.RouterGroup) {
 
 	snack := rg.Group("/snacks")
 	{
-		snack.GET("/", handlers.GetSnacks)
-		snack.POST("/", handlers.AddSnack)
-		snack.PUT("/:snack_id", handlers.UpdateSnack)
-		snack.DELETE("/:snack_id", handlers.DeleteSnack)
+		snack.GET("/", handlers.SnackList)
+		snack.POST("/", handlers.SnackCreate)
+		snack.PUT("/:snack_id", handlers.SnackUpdate)
+		snack.DELETE("/:snack_id", handlers.SnackDelete)
 	}
 }
