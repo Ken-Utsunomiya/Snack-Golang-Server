@@ -12,7 +12,7 @@ func (SnackBatchService) AddSnackBatch(snackBatch *models.SnackBatch) error {
 	return nil
 }
 
-func (SnackBatchService) UpdateSnackBatch(snack *models.SnackBatch) error {
+func (SnackBatchService) UpdateSnackBatch(snackBatch *models.SnackBatch) error {
 	return nil
 }
 
