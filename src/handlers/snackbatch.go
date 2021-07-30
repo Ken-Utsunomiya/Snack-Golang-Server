@@ -2,18 +2,18 @@ package handlers
 
 import "github.com/gin-gonic/gin"
 
-func GetSnackBatches(c *gin.Context) {
+func SnackBatchList(c *gin.Context) {
 
 }
 
-func AddSnackBatch(c *gin.Context) {
+func SnackBatchCreate(c *gin.Context) {
 
 }
 
-func UpdateSnackBatch(c *gin.Context) {
+func SnackBatchUpdate(c *gin.Context) {
 
 }
 
-func DeleteSnackBatch(c *gin.Context) {
+func SnackBatchDelete(c *gin.Context) {
 
 }
