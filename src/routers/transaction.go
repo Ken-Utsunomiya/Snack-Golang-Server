@@ -10,8 +10,8 @@ func TransactionRoutes(rg *gin.RouterGroup) {
 
 	transaction := rg.Group("/transactions")
 	{
-		transaction.GET("/", handlers.GetPopularSnacks)
-		transaction.POST("/", handlers.AddTransaction)
-		transaction.PUT("/:transaction_id", handlers.UpdateTransaction)
+		transaction.GET("/", handlers.PopularSnackList)
+		transaction.POST("/", handlers.TransactionCreate)
+		transaction.PUT("/:transaction_id", handlers.TransactionUpdate)
 	}
 }

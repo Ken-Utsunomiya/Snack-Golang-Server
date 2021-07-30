@@ -2,26 +2,26 @@ package handlers
 
 import "github.com/gin-gonic/gin"
 
-func GetUserTransactions(c *gin.Context) {
+func UserTransactionList(c *gin.Context) {
 
 }
 
-func GetUserTransaction(c *gin.Context) {
+func UserTransactionRetrieve(c *gin.Context) {
 
 }
 
-func AddTransaction(c *gin.Context) {
+func TransactionCreate(c *gin.Context) {
 
 }
 
-func UpdateTransaction(c *gin.Context) {
+func TransactionUpdate(c *gin.Context) {
 
 }
 
-func GetPendingOrders(c *gin.Context) {
+func PendingOrderList(c *gin.Context) {
 
 }
 
-func GetPopularSnacks(c *gin.Context) {
+func PopularSnackList(c *gin.Context) {
 
 }
