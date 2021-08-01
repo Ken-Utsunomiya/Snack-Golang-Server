@@ -30,6 +30,7 @@ func UserRetrieve(c *gin.Context) {
 		c.JSON(http.StatusBadGateway, gin.H{ "error": "Internal Server Error" })
 		return
 	}
+
 	c.JSON(http.StatusOK, user)
 }
 
@@ -39,6 +40,7 @@ func UserCommonList(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadGateway, gin.H{ "error": "Internal Server Error"})
 	}
+
 	c.JSON(http.StatusOK, gin.H{ "users": userCommonList })
 }
 
