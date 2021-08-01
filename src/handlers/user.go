@@ -19,6 +19,7 @@ func UserRetrieve(c *gin.Context) {
 		c.JSON(http.StatusBadGateway, gin.H{ "error": "UserID is invalid." })
 		return
 	}
+
 	userService := services.UserService{}
 	user, err := userService.GetUser(userId)
 	if user.ID == 0 {
@@ -30,16 +31,15 @@ func UserRetrieve(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, user)
-	return
 }
 
 func UserCommonList(c *gin.Context) {
 	userService := services.UserService{}
-	UserCommonList, err := userService.GetUserCommonList()
+	userCommonList, err := userService.GetUserCommonList()
 	if err != nil {
-		c.JSON(http.StatusBadGateway, err)
+		c.JSON(http.StatusBadGateway, gin.H{ "error": "Internal Server Error"})
 	}
-	c.JSON(http.StatusOK, UserCommonList)
+	c.JSON(http.StatusOK, gin.H{ "users": userCommonList })
 }
 
 func UserCreate(c *gin.Context) {
