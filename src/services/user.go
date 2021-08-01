@@ -11,8 +11,11 @@ func (UserService) GetUserList() []models.User {
 	return nil
 }
 
-func (UserService) GetUser() *models.User {
-	return nil
+func (UserService) GetUser(Id int) (models.User, error) {
+	db := database.GetDB()
+	user := models.User{}
+	err := db.First(&user, Id).Error
+	return user, err
 }
 
 func (UserService) GetUserCommonList() ([]models.User, error) {

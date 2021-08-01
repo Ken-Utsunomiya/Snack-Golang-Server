@@ -3,15 +3,15 @@ package models
 import "time"
 
 type User struct {
-	ID 				uint 	 		`gorm:"column:user_id;primaryKey;not null"`
-	Email 		string 		`gorm:"column:email_address;unique;not null;size:128"`
-	FirstName string 		`gorm:"column:first_name;not null;size:128"`
-	LastName 	string 		`gorm:"column:last_name;not null;size:128"`
-	ImageURI 	string 		`gorm:"column:image_uri;not null"`
-	Balance 	int 	 		`gorm:"column:balance;not null"`
-	IsAdmin 	bool 	 		`gorm:"column:is_admin;not null"`
-	IsActive 	bool 	 		`gorm:"column:is_active;not null"`
-	DeletedAt time.Time `gorm:"column:deleted_at"`
+	ID 				uint 	 		`json:"user_id" gorm:"column:user_id;primaryKey;not null"`
+	Email 		string 		`json:"email_address" gorm:"column:email_address;unique;not null;size:128"`
+	FirstName string 		`json:"first_name" gorm:"column:first_name;not null;size:128"`
+	LastName 	string 		`json:"last_name" gorm:"column:last_name;not null;size:128"`
+	ImageURI 	string 		`json:"image_uri" gorm:"column:image_uri;not null"`
+	Balance 	int 	 		`json:"balance" gorm:"column:balance;not null"`
+	IsAdmin 	bool 	 		`json:"is_admin" gorm:"column:is_admin;not null"`
+	IsActive 	bool 	 		`json:"is_active" gorm:"column:is_active;not null"`
+	DeletedAt time.Time `json:"deleted_at" gorm:"column:deleted_at"`
 }
 
 func (User) TableName() string {
