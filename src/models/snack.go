@@ -5,8 +5,8 @@ import (
 )
 
 type Snack struct {
-	ID 			       uint 		 `gorm:"column:snack_id;primaryKey;autoIncrement"`
-	SnackTypeID    uint      `gorm:"column:snack_type_id;not null"`
+	ID 			       uint 		 `json:"" gorm:"column:snack_id;primaryKey;autoIncrement"`
+	SnackTypeID    uint      `json:"" gorm:"column:snack_type_id;not null"`
 	Name           string 	 `gorm:"column:snack_name;unique;not null;size:128"`
 	Description    string    `gorm:"column:description;not null;size:128"`
 	ImageURI       string    `gorm:"column:image_uri;not null"`
