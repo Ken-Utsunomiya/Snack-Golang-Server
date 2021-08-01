@@ -5,11 +5,11 @@ import (
 )
 
 type Payment struct {
-	ID 						uint 			`gorm:"column:payment_id;primaryKey;autoIncrement;not null"`
-	UserID        uint      `gorm:"column:user_id;not null"`
-	PaymentAmount uint 			`gorm:"column:payment_amount;not null"`
-	PaymentDTM 		time.Time `gorm:"column:payment_dtm;not null"`
-	CreatedBy 		string 		`gorm:"column:created_by;not null;size:128"`
+	ID 						int 			`json:"payment_id"     gorm:"column:payment_id;primaryKey;autoIncrement;not null"`
+	UserID        int       `json:"user_id"        gorm:"column:user_id;not null"`
+	PaymentAmount int 			`json:"payment_amount" gorm:"column:payment_amount;not null"`
+	PaymentDTM 		time.Time `json:"payment_dtm"    gorm:"column:payment_dtm;not null"`
+	CreatedBy 		string 		`json:"created_by"     gorm:"column:created_by;not null;size:128"`
 	User          User
 }
 
