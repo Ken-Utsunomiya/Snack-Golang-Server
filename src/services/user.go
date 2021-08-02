@@ -21,8 +21,8 @@ func (UserService) GetUser(Id int) (models.User, error) {
 func (UserService) GetUserCommonList() ([]models.User, error) {
 	db := database.GetDB()
 	users := make([]models.User, 0)
-	err := db.Find(&users)
-	return users, err.Error
+	err := db.Find(&users).Error
+	return users, err
 }
 
 func (UserService) AddUser(user *models.User) error {
