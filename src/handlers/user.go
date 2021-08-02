@@ -1,7 +1,9 @@
 package handlers
 
 import (
+	"Snack-Golang-Server/src/models"
 	"Snack-Golang-Server/src/services"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -45,7 +47,22 @@ func UserCommonList(c *gin.Context) {
 }
 
 func UserCreate(c *gin.Context) {
+	user := models.User{}
+	err := c.Bind(&user)
+	fmt.Println(user)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{ "error": "Bad Request"})
+		return
+	}
 
+	userService := services.UserService{}
+	res, err := userService.AddUser(user)
+	if err != nil {
+		c.JSON(http.StatusBadGateway, gin.H{ "error": "Internal Server Error"})
+		return
+	}
+
+	c.JSON(http.StatusCreated, res)
 }
 
 func UserUpdate(c *gin.Context) {

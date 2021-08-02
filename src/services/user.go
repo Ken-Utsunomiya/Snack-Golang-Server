@@ -3,6 +3,7 @@ package services
 import (
 	"Snack-Golang-Server/src/database"
 	"Snack-Golang-Server/src/models"
+	"fmt"
 )
 
 type UserService struct {}
@@ -25,8 +26,12 @@ func (UserService) GetUserCommonList() ([]models.User, error) {
 	return users, err
 }
 
-func (UserService) AddUser(user *models.User) error {
-	return nil
+func (UserService) AddUser(user models.User) (models.User, error) {
+	db := database.GetDB()
+	err := db.Create(&user).Error
+	fmt.Println(user)
+	fmt.Println(err)
+	return user, err
 }
 
 func (UserService) UpdateUser(user *models.User) error {
