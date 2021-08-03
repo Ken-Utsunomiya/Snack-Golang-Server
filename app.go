@@ -2,9 +2,9 @@ package main
 
 import (
 	"Snack-Golang-Server/src/database"
-	"github.com/gin-gonic/gin"
-
+	"Snack-Golang-Server/src/middlewares"
 	"Snack-Golang-Server/src/routers"
+	"github.com/gin-gonic/gin"
 )
 
 type routes struct {
@@ -16,6 +16,8 @@ func main() {
 	r := routes{
 		router: gin.Default(),
 	}
+
+	r.router.Use(middlewares.ErrorMiddleware())
 
 	apiEngine := r.router.Group("/api")
 	{
