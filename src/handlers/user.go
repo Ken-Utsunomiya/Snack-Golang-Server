@@ -3,7 +3,6 @@ package handlers
 import (
 	"Snack-Golang-Server/src/models"
 	"Snack-Golang-Server/src/services"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -48,9 +47,7 @@ func UserCommonList(c *gin.Context) {
 
 func UserCreate(c *gin.Context) {
 	user := models.User{}
-	err := c.Bind(&user)
-	fmt.Println(user)
-	if err != nil {
+	if err := c.Bind(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{ "error": "Bad Request"})
 		return
 	}
