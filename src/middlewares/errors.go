@@ -10,6 +10,7 @@ const (
 	badRequest = "Bad Request"
 	notAuthorized = "Not Authorized"
 	notFound = "Not Found"
+	recordNotFound = "record not found"
 )
 
 func ErrorMiddleware() gin.HandlerFunc {
@@ -29,8 +30,8 @@ func ErrorMiddleware() gin.HandlerFunc {
 				c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 					"error": err.Error(),
 				})
-			case "Not Found":
-			case "record not found":
+			case notFound:
+			case recordNotFound:
 				c.AbortWithStatusJSON(http.StatusNotFound, gin.H{
 					"error": err.Error(),
 				})

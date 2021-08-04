@@ -24,10 +24,6 @@ func UserRetrieve(c *gin.Context) {
 
 	userService := services.UserService{}
 	user, err := userService.GetUser(userId)
-	if user.ID == 0 {
-		c.Error(err).SetType(gin.ErrorTypePublic)
-		return
-	}
 	if err != nil {
 		c.Error(err).SetType(gin.ErrorTypePublic)
 		return
@@ -40,7 +36,8 @@ func UserCommonList(c *gin.Context) {
 	userService := services.UserService{}
 	userCommonList, err := userService.GetUserCommonList()
 	if err != nil {
-		c.JSON(http.StatusBadGateway, gin.H{ "error": "Internal Server Error"})
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{ "users": userCommonList })
@@ -51,14 +48,14 @@ func UserCreate(c *gin.Context) {
 	err := c.Bind(&user)
 	fmt.Println(user)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{ "error": "Bad Request"})
+		c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
 	userService := services.UserService{}
 	res, err := userService.AddUser(user)
 	if err != nil {
-		c.JSON(http.StatusBadGateway, gin.H{ "error": "Internal Server Error"})
+		c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
