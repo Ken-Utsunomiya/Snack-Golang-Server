@@ -6,7 +6,7 @@ import (
 
 type Snack struct {
 	ID		int		`json:"snack_id"		gorm:"column:snack_id;primaryKey;autoIncrement"`
-	SnackTypeID	int       	`json:"snack_type_id"		gorm:"column:snack_type_id;not null;TYPE:integer REFERENCES snack_types"`
+	SnackTypeID	int       	`json:"snack_type_id"		gorm:"column:snack_type_id;not null;"`
 	Name		string 	 	`json:"snack_name"     		gorm:"column:snack_name;unique;not null;size:128"`
 	Description	string    	`json:"description"    		gorm:"column:description;not null;size:128"`
 	ImageURI	string    	`json:"image_uri"      		gorm:"column:image_uri;not null"`
