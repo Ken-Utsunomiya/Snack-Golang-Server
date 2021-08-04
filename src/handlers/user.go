@@ -17,18 +17,14 @@ func UserList(c *gin.Context) {
 func UserRetrieve(c *gin.Context) {
 	userId, err := strconv.Atoi(c.Param("user_id"))
 	if err != nil {
-		c.JSON(http.StatusBadGateway, gin.H{ "error": "UserID is invalid." })
+		c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
 	userService := services.UserService{}
 	user, err := userService.GetUser(userId)
-	if user.ID == 0 {
-		c.JSON(http.StatusNotFound, gin.H{ "error": "User not found." })
-		return
-	}
 	if err != nil {
-		c.JSON(http.StatusBadGateway, gin.H{ "error": "Internal Server Error" })
+		c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
@@ -39,7 +35,8 @@ func UserCommonList(c *gin.Context) {
 	userService := services.UserService{}
 	userCommonList, err := userService.GetUserCommonList()
 	if err != nil {
-		c.JSON(http.StatusBadGateway, gin.H{ "error": "Internal Server Error"})
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{ "users": userCommonList })
@@ -47,15 +44,16 @@ func UserCommonList(c *gin.Context) {
 
 func UserCreate(c *gin.Context) {
 	user := models.User{}
-	if err := c.Bind(&user); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{ "error": "Bad Request"})
+	err := c.Bind(&user)
+	if err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
 	userService := services.UserService{}
 	res, err := userService.AddUser(user)
 	if err != nil {
-		c.JSON(http.StatusBadGateway, gin.H{ "error": "Internal Server Error"})
+		c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
