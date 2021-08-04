@@ -32,8 +32,7 @@ func main() {
 		routers.SnackBatchRoutes(v1)
 	}
 
-	db := database.Init()
-	database.AutoMigrate(db)
+	database.Init()
 
 	r.router.Run(":3000")
 }

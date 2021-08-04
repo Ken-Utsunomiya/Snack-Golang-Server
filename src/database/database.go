@@ -1,7 +1,6 @@
 package database
 
 import (
-	"Snack-Golang-Server/src/models"
 	"Snack-Golang-Server/src/utils"
 	"database/sql"
 	"github.com/lib/pq"
@@ -41,17 +40,6 @@ func Init() *gorm.DB {
 
 	DB = gormDB
 	return DB
-}
-
-func AutoMigrate(db *gorm.DB) {
-	db.AutoMigrate(&models.User{})
-	db.AutoMigrate(&models.Snack{})
-	db.AutoMigrate(&models.SnackBatch{})
-	db.AutoMigrate(&models.SnackType{})
-	db.AutoMigrate(&models.Suggestion{})
-	db.AutoMigrate(&models.Transaction{})
-	db.AutoMigrate(&models.TransactionType{})
-	db.AutoMigrate(&models.Payment{})
 }
 
 func GetDB() *gorm.DB {
