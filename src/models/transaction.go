@@ -13,9 +13,6 @@ type Transaction struct {
 	TransactionAmount 	int 		`json:"transaction_amount"  gorm:"column:transaction_amount;not null"`
 	Quantity 		int 		`json:"quantity"            gorm:"column:quantity;not null"`
 	TransactionDTM 		time.Time 	`json:"transaction_dtm"     gorm:"column:transaction_dtm;not null"`
-	User              	User
-	Payment           	Payment
-	TransactionType   	TransactionType
 }
 
 func (Transaction) TableName() string {

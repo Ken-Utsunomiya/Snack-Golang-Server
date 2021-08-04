@@ -10,7 +10,6 @@ type Payment struct {
 	PaymentAmount 	int 		`json:"payment_amount" gorm:"column:payment_amount;not null"`
 	PaymentDTM 	time.Time 	`json:"payment_dtm"    gorm:"column:payment_dtm;not null"`
 	CreatedBy 	string 		`json:"created_by"     gorm:"column:created_by;not null;size:128"`
-	User          	User
 }
 
 func (Payment) TableName() string {
