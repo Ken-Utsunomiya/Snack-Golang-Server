@@ -3,6 +3,7 @@ package services
 import (
 	"Snack-Golang-Server/src/database"
 	"Snack-Golang-Server/src/models"
+	"fmt"
 )
 
 type TransactionService struct {}
@@ -14,8 +15,17 @@ func (TransactionService) GetUserTransactionList(userId int) ([]models.Transacti
 	return transactions, err
 }
 
-func (TransactionService) GetUserTransaction(userId uint) *models.Transaction {
-	return nil
+func (TransactionService) GetUserTransaction(userId int, transactionId int) (models.Transaction, error) {
+	fmt.Println("HERE")
+	db := database.GetDB()
+	transaction := models.Transaction{}
+	err := db.First(
+		&transaction,
+		models.Transaction{
+			ID: transactionId,
+			UserID: userId,
+		}).Error
+	return transaction, err
 }
 
 func (TransactionService) AddTransaction(transaction *models.Transaction) error {
