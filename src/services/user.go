@@ -7,8 +7,17 @@ import (
 
 type UserService struct {}
 
-func (UserService) GetUserList() []models.User {
-	return nil
+func (UserService) GetUserList(email string) ([]models.User, error) {
+	db := database.GetDB()
+	users := make([]models.User, 0)
+
+	var err error
+	if email != "" {
+		err = db.Find(&users, models.User{Email: email}).Error
+	} else {
+		err = db.Find(&users).Error
+	}
+	return users, err
 }
 
 func (UserService) GetUser(Id int) (models.User, error) {
