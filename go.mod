@@ -3,6 +3,7 @@ module Snack-Golang-Server
 go 1.16
 
 require (
+	github.com/biezhi/gorm-paginator/pagination v0.0.0-20190124091837-7a5c8ed20334 // indirect
 	github.com/gin-gonic/gin v1.7.2 // indirect
 	github.com/go-playground/validator/v10 v10.7.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect

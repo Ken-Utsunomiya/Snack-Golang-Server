@@ -11,25 +11,20 @@ func UserPaymentList(c *gin.Context) {
 	userService := services.UserService{}
 	paymentService := services.PaymentService{}
 
-	userId, err := strconv.Atoi(c.Param("user_id"))
+	userId, _ := strconv.Atoi(c.Param("user_id"))
+
+	_, err := userService.GetUser(userId)
 	if err != nil {
 		c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
-	_, err = userService.GetUser(userId)
-	if err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
-		return
-	}
+	page, _ := strconv.Atoi(c.Query("page"))
+	size, _ := strconv.Atoi(c.Query("size"))
 
-	userPaymentList, err := paymentService.GetUserPaymentList(userId)
-	if err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
-		return
-	}
+	userPayment, err := paymentService.GetUserPaymentList(userId, page, size)
 
-	c.JSON(http.StatusOK, userPaymentList)
+	c.JSON(http.StatusOK, userPayment)
 }
 
 func PaymentCreate(c *gin.Context) {
