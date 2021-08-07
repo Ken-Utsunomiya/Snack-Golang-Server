@@ -23,6 +23,10 @@ func UserPaymentList(c *gin.Context) {
 	size, _ := strconv.Atoi(c.Query("size"))
 
 	userPayment, err := paymentService.GetUserPaymentList(userId, page, size)
+	if err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
 
 	c.JSON(http.StatusOK, userPayment)
 }
