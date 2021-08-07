@@ -7,7 +7,7 @@ import (
 
 func SnackBatchRoutes(rg *gin.RouterGroup) {
 
-	snackBatch := rg.Group("/snackBatches")
+	snackBatch := rg.Group("/snack_batches")
 	{
 		snackBatch.GET("/", handlers.SnackBatchList)
 		snackBatch.POST("/", handlers.SnackBatchCreate)
