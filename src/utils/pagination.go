@@ -2,6 +2,7 @@ package utils
 
 import (
 	"gorm.io/gorm"
+	"math"
 )
 
 const (
@@ -23,13 +24,20 @@ type PaginationResponse struct {
 	CurrentPage  int      `json:"current_page"`
 }
 
-func (p *Pagination) Paginate(db *gorm.DB, page, size int, order string) func(db *gorm.DB) *gorm.DB {
+func (p *Pagination) Paginate(page, size int, order string) func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
 		p.Page = page
 		p.Limit = getLimit(size)
 		p.Sort = order
 		return db.Offset(getOffset(p.Page, p.Limit)).Limit(p.Limit).Order(p.Sort)
 	}
+}
+
+func SetResponse(p *Pagination, r *PaginationResponse, rows interface{}, count int64) {
+	r.TotalRows = int(count)
+	r.TotalPages = int(math.Ceil(float64(r.TotalRows / p.Limit))) + 1
+	r.Payments = rows
+	r.CurrentPage = p.Page
 }
 
 func getLimit(size int) int {
