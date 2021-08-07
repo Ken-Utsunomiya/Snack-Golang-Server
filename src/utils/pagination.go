@@ -18,9 +18,18 @@ type Pagination struct {
 
 type PaginationResponse struct {
 	TotalRows  		int         `json:"total_rows"`
-	Rows       		interface{} `json:"payments"`
 	TotalPages 		int         `json:"total_pages"`
 	CurrentPage  	int      		`json:"current_page"`
+}
+
+type PaymentResponse struct {
+	PaginationResponse
+	Rows      interface{} `json:"payments"`
+}
+
+type TransactionResponse struct {
+	PaginationResponse
+	Rows interface{} `json:"transactions"`
 }
 
 func (p *Pagination) Paginate(page, size int, order string) func(db *gorm.DB) *gorm.DB {
@@ -32,11 +41,19 @@ func (p *Pagination) Paginate(page, size int, order string) func(db *gorm.DB) *g
 	}
 }
 
-func SetResponse(p *Pagination, r *PaginationResponse, rows interface{}, count int64) {
-	r.TotalRows = int(count)
-	r.TotalPages = int(math.Ceil(float64(r.TotalRows / p.Limit))) + 1
-	r.Rows = rows
-	r.CurrentPage = p.Page
+func SetResponse(p *Pagination, model string, rows interface{}, count int64) interface{} {
+	totalRows := int(count)
+	totalPages := int(math.Ceil(float64(totalRows / p.Limit))) + 1
+	currentPage := p.Page
+	paginationResponse := PaginationResponse{ totalRows, totalPages, currentPage }
+
+	var r interface{}
+	if model == "payments" {
+		r = PaymentResponse{paginationResponse, rows}
+	} else if model == "transactions" {
+		r = TransactionResponse{paginationResponse, rows}
+	}
+	return r
 }
 
 func getLimit(size int) int {

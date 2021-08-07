@@ -8,7 +8,7 @@ import (
 
 type PaymentService struct {}
 
-func (PaymentService) GetUserPaymentList(userId, page, size int) (utils.PaginationResponse, error)  {
+func (PaymentService) GetUserPaymentList(userId, page, size int) (interface{}, error)  {
 	var count int64
 	db := database.GetDB().
 		Model(&models.Payment{}).
@@ -17,16 +17,15 @@ func (PaymentService) GetUserPaymentList(userId, page, size int) (utils.Paginati
 
 	paymentList := make([]models.Payment, 0)
 	pagination := utils.Pagination{}
-	paginationResponse := utils.PaginationResponse{}
 
 	err := db.
 		Scopes(pagination.Paginate(page, size, "payment_dtm desc")).
 		Find(&paymentList).Error
 	if err != nil {
-		return paginationResponse, err
+		return nil, err
 	}
 
-	utils.SetResponse(&pagination, &paginationResponse, paymentList, count)
+	paginationResponse := utils.SetResponse(&pagination, "payments", paymentList, count)
 	return paginationResponse, err
 }
 
