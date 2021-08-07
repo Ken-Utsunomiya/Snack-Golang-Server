@@ -11,7 +11,7 @@ func SnackBatchRoutes(rg *gin.RouterGroup) {
 	{
 		snackBatch.GET("/", handlers.SnackBatchList)
 		snackBatch.POST("/", handlers.SnackBatchCreate)
-		snackBatch.PUT("/:snackBatchId", handlers.SnackBatchUpdate)
-		snackBatch.DELETE("/:snackBatchId", handlers.SnackBatchDelete)
+		snackBatch.PUT("/:snack_batch_id", handlers.SnackBatchUpdate)
+		snackBatch.DELETE("/:snack_batch_id", handlers.SnackBatchDelete)
 	}
 }
