@@ -22,5 +22,11 @@ func SuggestionCreate(c *gin.Context) {
 }
 
 func SuggestionDelete(c *gin.Context) {
+	suggestionService := services.SuggestionService{}
+	if err := suggestionService.DeleteSuggestion(); err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
 
+	c.Status(http.StatusNoContent)
 }
