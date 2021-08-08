@@ -17,6 +17,13 @@ type Snack struct {
 	LastUpdatedBy  	string    	`json:"last_updated_by"  	gorm:"column:last_updated_by;not null;size:128"`
 }
 
+type PopularSnack struct {
+	Name string `json:"snack_name"`
+	TotalQuantity int `json:"total_quantity"`
+	SnackTypeId int `json:"snack_type_id"`
+	ImageURI string `json:"image_uri"`
+}
+
 func (Snack) TableName() string {
 	return "snacks"
 }

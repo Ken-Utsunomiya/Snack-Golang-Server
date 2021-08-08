@@ -87,5 +87,17 @@ func PendingOrderList(c *gin.Context) {
 }
 
 func PopularSnackList(c *gin.Context) {
+	startDate := c.Query("start_date")
+	endDate := c.Query("end_date")
+	transactionTypeId, _ := strconv.Atoi(c.Query("transaction_type_id"))
+	limit, _ := strconv.Atoi(c.Query("limit"))
 
+	transactionService := services.TransactionService{}
+	popularSnacks, err := transactionService.GetPopularSnackList(startDate, endDate, transactionTypeId, limit)
+	if err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	c.JSON(http.StatusOK, popularSnacks)
 }

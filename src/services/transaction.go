@@ -2,8 +2,11 @@ package services
 
 import (
 	"Snack-Golang-Server/src/database"
+	"Snack-Golang-Server/src/middlewares"
 	"Snack-Golang-Server/src/models"
 	"Snack-Golang-Server/src/utils"
+	"errors"
+	"sort"
 )
 
 type TransactionService struct {}
@@ -70,6 +73,32 @@ func (TransactionService) GetPendingOrderList(userId, page, size int) (interface
 	return paginationResponse, err
 }
 
-func (TransactionService) GetPopularSnackList() []models.Snack {
-	return nil
+func (TransactionService) GetPopularSnackList(start string, end string, transactionTypeId int, limit int) (interface{}, error) {
+	db := database.GetDB()
+	if !isValidQueryParams(start, end, transactionTypeId, limit) {
+		return nil, errors.New(middlewares.BadRequest)
+	}
+
+	popularSnacks := make([]models.PopularSnack, 0)
+	where := "transaction_type_id = ? AND payment_id <> null ? AND transaction_dtm BETWEEN ? AND ?"
+	err := db.
+		Model(&models.Transaction{}).
+		Where(where, transactionTypeId, start, end).
+		Select("snack_name, sum(quantity) as total_quantity").
+		Group("snack_name").
+		Find(&popularSnacks).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	sort.Slice(popularSnacks, func(i, j int) bool {
+		return popularSnacks[i].TotalQuantity > popularSnacks[j].TotalQuantity
+	})
+
+	return popularSnacks, nil
+}
+
+func isValidQueryParams(start string, end string, transactionTypeId int, limit int) bool {
+	return !(start == "" || end == "" || transactionTypeId == 0 || limit == 0)
 }
