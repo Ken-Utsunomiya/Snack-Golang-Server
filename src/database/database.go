@@ -17,11 +17,7 @@ var DB *gorm.DB
 
 func Init() *gorm.DB {
 	dbUri := utils.GetEnvVariable("DB_URI")
-	connection, err := pq.ParseURL(dbUri)
-	if err != nil {
-		log.Fatalf("Connection error")
-	}
-	connection += " sslmode=require"
+	connection := getConn(dbUri)
 
 	sqlDB, sqlErr := sql.Open("postgres", connection)
 	if sqlErr != nil {
@@ -44,4 +40,13 @@ func Init() *gorm.DB {
 
 func GetDB() *gorm.DB {
 	return DB
+}
+
+func getConn(dbUri string) string {
+	connection, err := pq.ParseURL(dbUri)
+	if err != nil {
+		log.Fatalf("Connection error")
+	}
+	connection += " sslmode=require"
+	return connection
 }
