@@ -8,11 +8,25 @@ import (
 
 type TransactionService struct {}
 
-func (TransactionService) GetUserTransactionList(userId int) ([]models.Transaction, error) {
-	db := database.GetDB()
-	transactions := make([]models.Transaction, 0)
-	err := db.Find(&transactions, models.Transaction{UserID: userId}).Error
-	return transactions, err
+func (TransactionService) GetUserTransactionList(userId, page, size int) (interface{}, error) {
+	var count int64
+	db := database.GetDB().
+		Model(&models.Transaction{}).
+		Where("user_id = ?", userId).
+		Count(&count)
+
+	transactionList := make([]models.Transaction, 0)
+	pagination := utils.Pagination{}
+
+	err := db.
+		Scopes(pagination.Paginate(page, size, "transaction_dtm desc")).
+		Find(&transactionList).Error
+	if err != nil {
+		return nil, err
+	}
+
+	paginationResponse := utils.SetResponse(&pagination, "transactions", transactionList, count)
+	return paginationResponse, err
 }
 
 func (TransactionService) GetUserTransaction(userId int, transactionId int) (models.Transaction, error) {

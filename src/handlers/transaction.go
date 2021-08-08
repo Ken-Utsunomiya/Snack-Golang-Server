@@ -11,25 +11,24 @@ func UserTransactionList(c *gin.Context) {
 	userService := services.UserService{}
 	transactionService := services.TransactionService{}
 
-	userId, err := strconv.Atoi(c.Param("user_id"))
+	userId, _ := strconv.Atoi(c.Param("user_id"))
+
+	_, err := userService.GetUser(userId)
 	if err != nil {
 		c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
-	_, err = userService.GetUser(userId)
+	page, _ := strconv.Atoi(c.Query("page"))
+	size, _ := strconv.Atoi(c.Query("size"))
+
+	userTransaction, err := transactionService.GetUserTransactionList(userId, page, size)
 	if err != nil {
 		c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
-	userTransactionList, err := transactionService.GetUserTransactionList(userId)
-	if err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
-		return
-	}
-
-	c.JSON(http.StatusOK, userTransactionList)
+	c.JSON(http.StatusOK, userTransaction)
 }
 
 func UserTransactionRetrieve(c *gin.Context) {
