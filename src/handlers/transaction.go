@@ -65,7 +65,26 @@ func TransactionUpdate(c *gin.Context) {
 }
 
 func PendingOrderList(c *gin.Context) {
+	userService := services.UserService{}
+	transactionService := services.TransactionService{}
 
+	userId, _ := strconv.Atoi(c.Param("user_id"))
+	_, err := userService.GetUser(userId)
+	if err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	page, _ := strconv.Atoi(c.Query("page"))
+	size, _ := strconv.Atoi(c.Query("size"))
+
+	pendingOrders, err := transactionService.GetPendingOrderList(userId, page, size)
+	if err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	c.JSON(http.StatusOK, pendingOrders)
 }
 
 func PopularSnackList(c *gin.Context) {

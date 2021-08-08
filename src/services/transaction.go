@@ -3,6 +3,7 @@ package services
 import (
 	"Snack-Golang-Server/src/database"
 	"Snack-Golang-Server/src/models"
+	"Snack-Golang-Server/src/utils"
 )
 
 type TransactionService struct {}
@@ -34,8 +35,25 @@ func (TransactionService) UpdateTransaction(transaction *models.Transaction) err
 	return nil
 }
 
-func (TransactionService) GetPendingOrderList(userId uint) []models.Transaction {
-	return nil
+func (TransactionService) GetPendingOrderList(userId, page, size int) (interface{}, error) {
+	var count int64
+	db := database.GetDB().
+		Model(&models.Transaction{}).
+		Where("user_id = ? AND transaction_type_id = ?", userId, 3).
+		Count(&count)
+
+	pendingOrderList := make([]models.Transaction, 0)
+	pagination := utils.Pagination{}
+
+	err := db.
+		Scopes(pagination.Paginate(page, size, "transaction_dtm desc")).
+		Find(&pendingOrderList).Error
+	if err != nil {
+		return nil, err
+	}
+
+	paginationResponse := utils.SetResponse(&pagination, "transactions", pendingOrderList, count)
+	return paginationResponse, err
 }
 
 func (TransactionService) GetPopularSnackList() []models.Snack {
