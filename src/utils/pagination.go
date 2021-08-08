@@ -43,7 +43,10 @@ func (p *Pagination) Paginate(page, size int, order string) func(db *gorm.DB) *g
 
 func SetResponse(p *Pagination, model string, rows interface{}, count int64) interface{} {
 	totalRows := int(count)
-	totalPages := int(math.Ceil(float64(totalRows / p.Limit))) + 1
+	totalPages := int(math.Ceil(float64(totalRows / p.Limit)))
+	if totalPages == 0 {
+		totalPages = 1
+	}
 	currentPage := p.Page
 	paginationResponse := PaginationResponse{ totalRows, totalPages, currentPage }
 
