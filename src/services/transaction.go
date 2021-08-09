@@ -91,6 +91,17 @@ func (TransactionService) GetPopularSnackList(start string, end string, transact
 		return nil, err
 	}
 
+	for i := range popularSnacks {
+		snack := models.Snack{}
+		db = database.GetDB().Model(&models.Snack{})
+		err = db.Find(&snack, models.Snack{Name: popularSnacks[i].SnackName}).Error
+		if err != nil {
+			return nil, errors.New(middlewares.NotFound)
+		}
+		popularSnacks[i].SnackTypeID = snack.SnackTypeID
+		popularSnacks[i].ImageURI = snack.ImageURI
+	}
+
 	return popularSnacks, nil
 }
 
