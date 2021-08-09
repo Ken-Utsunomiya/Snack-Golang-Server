@@ -11,6 +11,7 @@ const (
 	NotAuthorized = "NOT AUTHORIZED"
 	NotFound       = "NOT FOUND"
 	RecordNotFound = "record not found"
+	InternalServerError = "Internal Server Error"
 )
 
 func ErrorMiddleware() gin.HandlerFunc {
@@ -24,20 +25,20 @@ func ErrorMiddleware() gin.HandlerFunc {
 			switch err.Error() {
 			case BadRequest:
 				c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-					"error": err.Error(),
+					"error": BadRequest,
 				})
 			case NotAuthorized:
-				c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-					"error": err.Error(),
+				c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+					"error": NotAuthorized,
 				})
 			case NotFound:
 			case RecordNotFound:
 				c.AbortWithStatusJSON(http.StatusNotFound, gin.H{
-					"error": err.Error(),
+					"error": NotFound,
 				})
 			default:
 				c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
-					"error": "Internal Server Error",
+					"error": InternalServerError,
 				})
 			}
 		}
