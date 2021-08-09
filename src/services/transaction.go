@@ -94,7 +94,7 @@ func (TransactionService) GetPopularSnackList(start string, end string, transact
 	for i := range popularSnacks {
 		snack := models.Snack{}
 		db = database.GetDB().Model(&models.Snack{})
-		err = db.Find(&snack, models.Snack{Name: popularSnacks[i].SnackName}).Error
+		err = db.First(&snack, models.Snack{Name: popularSnacks[i].SnackName}).Error
 		if err != nil {
 			return nil, errors.New(middlewares.NotFound)
 		}
