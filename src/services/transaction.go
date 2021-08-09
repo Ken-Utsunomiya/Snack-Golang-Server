@@ -81,18 +81,15 @@ func (TransactionService) GetPopularSnackList(start string, end string, transact
 	db := database.GetDB().
 		Table("transactions").
 		Select("snack_name, sum(quantity) as total_quantity").
+		Order("total_quantity desc").
 		Where(cond, transactionTypeId, start, end).
 		Group("snack_name")
 
 	popularSnacks := make([]models.PopularSnack, 0)
-	err := db.Find(&popularSnacks).Error
+	err := db.Limit(limit).Find(&popularSnacks).Error
 	if err != nil {
 		return nil, err
 	}
-
-	//sort.Slice(transactions, func(i, j int) bool {
-	//	return transactions[i].TotalQuantity > transactions[j].TotalQuantity
-	//})
 
 	return popularSnacks, nil
 }
