@@ -72,7 +72,7 @@ func (TransactionService) GetPendingOrderList(userId, page, size int) (interface
 	return paginationResponse, err
 }
 
-func (TransactionService) GetPopularSnackList(start string, end string, transactionTypeId int, limit int) (interface{}, error) {
+func (TransactionService) GetPopularSnackList(start string, end string, transactionTypeId int, limit int) ([]models.PopularSnack, error) {
 	if !isValidQueryParams(start, end, transactionTypeId, limit) {
 		return nil, errors.New(middlewares.BadRequest)
 	}
