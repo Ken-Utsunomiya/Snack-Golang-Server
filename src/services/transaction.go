@@ -6,7 +6,6 @@ import (
 	"Snack-Golang-Server/src/models"
 	"Snack-Golang-Server/src/utils"
 	"errors"
-	"sort"
 )
 
 type TransactionService struct {}
@@ -74,27 +73,26 @@ func (TransactionService) GetPendingOrderList(userId, page, size int) (interface
 }
 
 func (TransactionService) GetPopularSnackList(start string, end string, transactionTypeId int, limit int) (interface{}, error) {
-	db := database.GetDB()
 	if !isValidQueryParams(start, end, transactionTypeId, limit) {
 		return nil, errors.New(middlewares.BadRequest)
 	}
 
-	popularSnacks := make([]models.PopularSnack, 0)
-	where := "transaction_type_id = ? AND payment_id <> null ? AND transaction_dtm BETWEEN ? AND ?"
-	err := db.
-		Model(&models.Transaction{}).
-		Where(where, transactionTypeId, start, end).
+	cond := "transaction_type_id = ? AND payment_id <> 0 AND transaction_dtm BETWEEN ? AND ?"
+	db := database.GetDB().
+		Table("transactions").
 		Select("snack_name, sum(quantity) as total_quantity").
-		Group("snack_name").
-		Find(&popularSnacks).Error
+		Where(cond, transactionTypeId, start, end).
+		Group("snack_name")
 
+	popularSnacks := make([]models.PopularSnack, 0)
+	err := db.Find(&popularSnacks).Error
 	if err != nil {
 		return nil, err
 	}
 
-	sort.Slice(popularSnacks, func(i, j int) bool {
-		return popularSnacks[i].TotalQuantity > popularSnacks[j].TotalQuantity
-	})
+	//sort.Slice(transactions, func(i, j int) bool {
+	//	return transactions[i].TotalQuantity > transactions[j].TotalQuantity
+	//})
 
 	return popularSnacks, nil
 }

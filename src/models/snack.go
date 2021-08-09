@@ -18,7 +18,7 @@ type Snack struct {
 }
 
 type PopularSnack struct {
-	Name string `json:"snack_name"`
+	SnackName string `json:"snack_name"`
 	TotalQuantity int `json:"total_quantity"`
 	SnackTypeId int `json:"snack_type_id"`
 	ImageURI string `json:"image_uri"`
