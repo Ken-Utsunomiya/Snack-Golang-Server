@@ -50,8 +50,7 @@ func UserCreate(c *gin.Context) {
 	userService := services.UserService{}
 
 	user := models.User{}
-	err := c.Bind(&user)
-	if err != nil {
+	if err := c.ShouldBindJSON(&user); err != nil {
 		c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
