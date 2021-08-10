@@ -9,9 +9,9 @@ import (
 )
 
 func UserList(c *gin.Context) {
-	email := c.Query("email_address")
-
 	userService := services.UserService{}
+
+	email := c.Query("email_address")
 	userList, err := userService.GetUserList(email)
 	if err != nil {
 		c.Error(err).SetType(gin.ErrorTypePublic)
@@ -22,13 +22,9 @@ func UserList(c *gin.Context) {
 }
 
 func UserRetrieve(c *gin.Context) {
-	userId, err := strconv.Atoi(c.Param("user_id"))
-	if err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
-		return
-	}
-
 	userService := services.UserService{}
+
+	userId, _ := strconv.Atoi(c.Param("user_id"))
 	user, err := userService.GetUser(userId)
 	if err != nil {
 		c.Error(err).SetType(gin.ErrorTypePublic)
@@ -40,6 +36,7 @@ func UserRetrieve(c *gin.Context) {
 
 func UserCommonList(c *gin.Context) {
 	userService := services.UserService{}
+
 	userCommonList, err := userService.GetUserCommonList()
 	if err != nil {
 		c.Error(err).SetType(gin.ErrorTypePublic)
@@ -50,6 +47,8 @@ func UserCommonList(c *gin.Context) {
 }
 
 func UserCreate(c *gin.Context) {
+	userService := services.UserService{}
+
 	user := models.User{}
 	err := c.Bind(&user)
 	if err != nil {
@@ -57,7 +56,6 @@ func UserCreate(c *gin.Context) {
 		return
 	}
 
-	userService := services.UserService{}
 	res, err := userService.AddUser(user)
 	if err != nil {
 		c.Error(err).SetType(gin.ErrorTypePublic)
