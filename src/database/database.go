@@ -27,9 +27,10 @@ func Init() *gorm.DB {
 	sqlDB.SetMaxIdleConns(10)
 	sqlDB.SetMaxOpenConns(100)
 
-	gormDB, gormErr := gorm.Open(postgres.New(postgres.Config{
-		Conn: sqlDB,
-	}), &gorm.Config{})
+	gormDB, gormErr := gorm.Open(postgres.New(
+		postgres.Config{ Conn: sqlDB }),
+		&gorm.Config{ SkipDefaultTransaction: true},
+	)
 	if gormErr != nil {
 		log.Fatalf("Error opening gorm database")
 	}
