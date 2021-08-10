@@ -7,19 +7,19 @@ import (
 
 type SnackBatchService struct {}
 
-func (SnackBatchService) GetSnackBatchList(Id int, order string) ([]models.SnackBatch, error) {
+func (SnackBatchService) GetSnackBatchList(id int, order string) ([]models.SnackBatch, error) {
 	db := database.GetDB()
 	snackBatches := make([]models.SnackBatch, 0)
 
 	var err error
-	if Id == 0 {
+	if id == 0 {
 		err = db.
 			Order(order).
 			Find(&snackBatches).Error
 	} else {
 		err = db.
 			Order(order).
-			Find(&snackBatches, models.SnackBatch{SnackID: Id}).Error
+			Find(&snackBatches, models.SnackBatch{SnackID: id}).Error
 	}
 
 	return snackBatches, err
