@@ -34,17 +34,8 @@ func UserTransactionList(c *gin.Context) {
 func UserTransactionRetrieve(c *gin.Context) {
 	transactionService := services.TransactionService{}
 
-	userId, err := strconv.Atoi(c.Param("user_id"))
-	if err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
-		return
-	}
-
-	transactionId, err := strconv.Atoi(c.Param("transaction_id"))
-	if err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
-		return
-	}
+	userId, _ := strconv.Atoi(c.Param("user_id"))
+	transactionId, _ := strconv.Atoi(c.Param("transaction_id"))
 
 	userTransaction, err := transactionService.GetUserTransaction(userId, transactionId)
 	if err != nil {
