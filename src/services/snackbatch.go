@@ -33,6 +33,8 @@ func (SnackBatchService) UpdateSnackBatch(snackBatch *models.SnackBatch) error {
 	return nil
 }
 
-func (SnackBatchService) DeleteSnackBatch(id uint) error {
-	return nil
+func (SnackBatchService) DeleteSnackBatch(id int) error {
+	db := database.GetDB()
+	err := db.Delete(&models.SnackBatch{}, id).Error
+	return err
 }

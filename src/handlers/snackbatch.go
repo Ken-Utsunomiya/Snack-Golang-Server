@@ -36,5 +36,13 @@ func SnackBatchUpdate(c *gin.Context) {
 }
 
 func SnackBatchDelete(c *gin.Context) {
+	snackBatchService := services.SnackBatchService{}
 
+	snackBatchId, _ := strconv.Atoi(c.Param("snack_batch_id"))
+	if err := snackBatchService.DeleteSnackBatch(snackBatchId); err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	c.Status(http.StatusNoContent)
 }
