@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"Snack-Golang-Server/src/models"
 	"Snack-Golang-Server/src/services"
+	"Snack-Golang-Server/src/validators"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -49,13 +49,13 @@ func UserCommonList(c *gin.Context) {
 func UserCreate(c *gin.Context) {
 	userService := services.UserService{}
 
-	user := models.User{}
-	if err := c.ShouldBindJSON(&user); err != nil {
+	userRegisterRequest := validators.UserRegisterRequest{}
+	if err := c.ShouldBindJSON(&userRegisterRequest); err != nil {
 		c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
-	res, err := userService.AddUser(user)
+	res, err := userService.AddUser(userRegisterRequest)
 	if err != nil {
 		c.Error(err).SetType(gin.ErrorTypePublic)
 		return

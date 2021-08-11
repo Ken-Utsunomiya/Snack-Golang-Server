@@ -3,6 +3,8 @@ package services
 import (
 	"Snack-Golang-Server/src/database"
 	"Snack-Golang-Server/src/models"
+	"Snack-Golang-Server/src/utils"
+	"Snack-Golang-Server/src/validators"
 )
 
 type UserService struct {}
@@ -34,9 +36,12 @@ func (UserService) GetUserCommonList() ([]models.User, error) {
 	return users, err
 }
 
-func (UserService) AddUser(user models.User) (models.User, error) {
+func (UserService) AddUser(request validators.UserRegisterRequest) (models.User, error) {
 	db := database.GetDB()
-	err := db.Create(&user).Error
+
+	user := utils.RequestToUserModel(request)
+
+	err := db.Model(models.User{}).Create(&user).Error
 	return user, err
 }
 
