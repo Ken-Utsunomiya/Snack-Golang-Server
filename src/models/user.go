@@ -1,7 +1,7 @@
 package models
 
 import (
-	"database/sql"
+	"time"
 )
 
 type User struct {
@@ -13,7 +13,7 @@ type User struct {
 	Balance 	int 	 	`json:"balance"`
 	IsAdmin 	bool 	 	`json:"is_admin"`
 	IsActive 	bool		`json:"is_active"`
-	DeletedAt 	sql.NullTime 	`json:"deleted_at"`
+	DeletedAt 	time.Time 	`json:"deleted_at"`
 }
 
 func (User) TableName() string {
