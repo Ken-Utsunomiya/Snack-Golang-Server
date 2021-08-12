@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"Snack-Golang-Server/src/services"
+	"Snack-Golang-Server/src/validators"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -28,7 +29,21 @@ func SnackBatchList(c *gin.Context) {
 }
 
 func SnackBatchCreate(c *gin.Context) {
+	snackBatchService := services.SnackBatchService{}
 
+	snackBatchRegisterRequest := validators.SnackBatchRegisterRequest{}
+	if err := c.ShouldBindJSON(&snackBatchRegisterRequest); err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	res, err := snackBatchService.AddSnackBatch(snackBatchRegisterRequest)
+	if err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	c.JSON(http.StatusCreated, res)
 }
 
 func SnackBatchUpdate(c *gin.Context) {

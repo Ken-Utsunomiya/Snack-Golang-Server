@@ -5,6 +5,7 @@ import (
 	"Snack-Golang-Server/src/middlewares"
 	"Snack-Golang-Server/src/models"
 	"Snack-Golang-Server/src/utils"
+	"Snack-Golang-Server/src/validators"
 	"errors"
 )
 
@@ -43,8 +44,16 @@ func (TransactionService) GetUserTransaction(userId int, transactionId int) (mod
 	return transaction, err
 }
 
-func (TransactionService) AddTransaction(transaction *models.Transaction) error {
-	return nil
+func (TransactionService) AddTransaction(request validators.TransactionRegisterRequest) (models.Transaction, error) {
+	db := database.GetDB()
+
+	transaction := validators.RegisterRequestToTransactionModel(request)
+
+	err := db.
+		Model(models.Transaction{}).
+		Create(&transaction).Error
+
+	return transaction, err
 }
 
 func (TransactionService) UpdateTransaction(transaction *models.Transaction) error {

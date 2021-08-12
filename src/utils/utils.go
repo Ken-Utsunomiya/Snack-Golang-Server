@@ -4,6 +4,7 @@ import (
 	"github.com/joho/godotenv"
 	"log"
 	"os"
+	"time"
 )
 
 func GetEnvVariable(key string) string {
@@ -15,4 +16,8 @@ func GetEnvVariable(key string) string {
 	}
 
 	return os.Getenv(key)
+}
+
+func TimeStamp(date string) int64 {
+	time.
 }

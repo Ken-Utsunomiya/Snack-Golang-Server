@@ -3,6 +3,7 @@ package services
 import (
 	"Snack-Golang-Server/src/database"
 	"Snack-Golang-Server/src/models"
+	"Snack-Golang-Server/src/validators"
 )
 
 type SnackBatchService struct {}
@@ -25,8 +26,13 @@ func (SnackBatchService) GetSnackBatchList(snackId int, order string) ([]models.
 	return snackBatches, err
 }
 
-func (SnackBatchService) AddSnackBatch(snackBatch *models.SnackBatch) error {
-	return nil
+func (SnackBatchService) AddSnackBatch(request validators.SnackBatchRegisterRequest) (models.SnackBatch, error) {
+	db := database.GetDB()
+
+	snackbatch := validators.RegisterRequestToSnackBatchModel(request)
+
+	err := db.Model(models.SnackBatch{}).Create(&snackbatch).Error
+	return snackbatch, err
 }
 
 func (SnackBatchService) UpdateSnackBatch(snackBatch *models.SnackBatch) error {

@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"Snack-Golang-Server/src/services"
+	"Snack-Golang-Server/src/validators"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -47,7 +48,21 @@ func UserTransactionRetrieve(c *gin.Context) {
 }
 
 func TransactionCreate(c *gin.Context) {
+	transactionService := services.TransactionService{}
 
+	registerRequest := validators.TransactionRegisterRequest{}
+	if err := c.ShouldBindJSON(&registerRequest); err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	res, err := transactionService.AddTransaction(registerRequest)
+	if err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	c.JSON(http.StatusCreated, res)
 }
 
 func TransactionUpdate(c *gin.Context) {
