@@ -58,13 +58,13 @@ func (TransactionService) AddTransaction(request validators.TransactionRegisterR
 	err := db.Transaction(func(tx *gorm.DB) error {
 		user := models.User{}
 		userId := request.UserID
-		if err := tx.First(&user, models.User{ID: userId}).Error; err != nil {
+		if err := tx.First(&user, userId).Error; err != nil {
 			return err
 		}
 
 		snack := models.Snack{}
 		snackId := request.SnackID
-		if err := tx.First(&snack, models.Snack{ID: snackId}).Error; err != nil {
+		if err := tx.First(&snack, snackId).Error; err != nil {
 			return err
 		}
 
