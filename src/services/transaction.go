@@ -78,8 +78,7 @@ func (TransactionService) AddTransaction(request validators.TransactionRegisterR
 			}
 		}
 
-
-		transaction = validators.RegisterRequestToTransactionModel(request)
+		transaction = validators.RegisterRequestToTransactionModel(request, snack.Name)
 
 		if err := tx.Model(models.Transaction{}).Create(&transaction).Error; err != nil {
 			tx.Rollback()

@@ -10,10 +10,12 @@ type TransactionRegisterRequest struct {
 	Quantity 					int `json:"quantity" binding:"required,min=1"`
 }
 
-func RegisterRequestToTransactionModel(request TransactionRegisterRequest) models.Transaction {
+func RegisterRequestToTransactionModel(request TransactionRegisterRequest, snackName string) models.Transaction {
 	transaction := models.Transaction{}
 	transaction.UserID = request.UserID
 	transaction.TransactionTypeID = request.TransactionTypeID
-	//transaction.
+	transaction.SnackName = snackName
+	transaction.TransactionAmount = request.TransactionAmount
+	transaction.Quantity = request.Quantity
 	return transaction
 }
