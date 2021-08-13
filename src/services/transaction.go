@@ -7,6 +7,13 @@ import (
 	"Snack-Golang-Server/src/utils"
 	"Snack-Golang-Server/src/validators"
 	"errors"
+	"gorm.io/gorm"
+)
+const (
+	PURCHASE = 1
+	CANCEL = 2
+	PENDING = 3
+	PENDING_CANCEL = 4
 )
 
 type TransactionService struct {}
@@ -47,11 +54,40 @@ func (TransactionService) GetUserTransaction(userId int, transactionId int) (mod
 func (TransactionService) AddTransaction(request validators.TransactionRegisterRequest) (models.Transaction, error) {
 	db := database.GetDB()
 
-	transaction := validators.RegisterRequestToTransactionModel(request)
+	var transaction models.Transaction
+	err := db.Transaction(func(tx *gorm.DB) error {
+		user := models.User{}
+		userId := request.UserID
+		if err := tx.First(&user, models.User{ID: userId}).Error; err != nil {
+			return err
+		}
 
-	err := db.
-		Model(models.Transaction{}).
-		Create(&transaction).Error
+		snack := models.Snack{}
+		snackId := request.SnackID
+		if err := tx.First(&snack, models.Snack{ID: snackId}).Error; err != nil {
+			return err
+		}
+
+		// Update snack batch here
+
+		if request.TransactionTypeID == PURCHASE {
+			balance := user.Balance + request.TransactionAmount
+			if err := tx.Model(&user).Update("balance", balance).Error; err != nil {
+				tx.Rollback()
+				return err
+			}
+		}
+
+
+		transaction = validators.RegisterRequestToTransactionModel(request)
+
+		if err := tx.Model(models.Transaction{}).Create(&transaction).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
+
+		return nil
+	})
 
 	return transaction, err
 }
