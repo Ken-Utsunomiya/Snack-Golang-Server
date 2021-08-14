@@ -1,7 +1,10 @@
 package handlers
 
 import (
+	"Snack-Golang-Server/src/middlewares"
 	"Snack-Golang-Server/src/services"
+	"Snack-Golang-Server/src/validators"
+	"errors"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -18,7 +21,22 @@ func SuggestionList(c *gin.Context) {
 }
 
 func SuggestionCreate(c *gin.Context) {
+	suggestionService := services.SuggestionService{}
 
+	registerRequest := validators.SuggestionRegisterRequest{}
+
+	if err := c.ShouldBindJSON(&registerRequest); err != nil {
+		c.Error(errors.New(middlewares.BadRequest)).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	res, err := suggestionService.AddSuggestion(registerRequest)
+	if err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	c.JSON(http.StatusCreated, res)
 }
 
 func SuggestionDelete(c *gin.Context) {
