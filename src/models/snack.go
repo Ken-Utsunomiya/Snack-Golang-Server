@@ -12,7 +12,7 @@ type Snack struct {
 	ImageURI	string    	`json:"image_uri" gorm:"column:image_uri;not null"`
 	Price		int 		`json:"price" gorm:"column:price;not null"`
 	IsActive       	bool 	   	`json:"is_active" gorm:"column:is_active;not null"`
-	OrderThreshold 	int 		`json:"order_threshold" gorm:"column:order_threshold"`
+	OrderThreshold 	*int 		`json:"order_threshold" gorm:"column:order_threshold"`
 	LastUpdatedDTM 	time.Time 	`json:"last_updated_dtm" gorm:"column:last_updated_dtm;not null"`
 	LastUpdatedBy  	string    	`json:"last_updated_by" gorm:"column:last_updated_by;not null;size:128"`
 }
