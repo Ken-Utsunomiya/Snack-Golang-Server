@@ -1,8 +1,10 @@
 package handlers
 
 import (
+	"Snack-Golang-Server/src/middlewares"
 	"Snack-Golang-Server/src/services"
 	"Snack-Golang-Server/src/validators"
+	"errors"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -52,7 +54,7 @@ func TransactionCreate(c *gin.Context) {
 
 	registerRequest := validators.TransactionRegisterRequest{}
 	if err := c.ShouldBindJSON(&registerRequest); err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		c.Error(errors.New(middlewares.BadRequest)).SetType(gin.ErrorTypePublic)
 		return
 	}
 
