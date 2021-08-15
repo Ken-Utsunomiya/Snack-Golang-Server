@@ -55,6 +55,8 @@ func (PaymentService) AddPayment(request validators.PaymentRegisterRequest) (mod
 			return err
 		}
 
+		payment = validators.RegisterRequestToPaymentModel(request)
+
 		// create a payment
 		if err := tx.Create(&payment).Error; err != nil {
 			tx.Rollback()
@@ -62,7 +64,15 @@ func (PaymentService) AddPayment(request validators.PaymentRegisterRequest) (mod
 		}
 
 		// update transaction status
-
+		paymentId := payment.ID
+		if err := tx.
+			Model(&models.Transaction{}).
+			Where("transaction_id IN ?", request.TransactionIDs).
+			Update("payment_id", paymentId).Error;
+		err != nil {
+			tx.Rollback()
+			return err
+		}
 
 		return nil
 	})
