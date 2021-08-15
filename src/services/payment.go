@@ -4,6 +4,7 @@ import (
 	"Snack-Golang-Server/src/database"
 	"Snack-Golang-Server/src/models"
 	"Snack-Golang-Server/src/utils"
+	"Snack-Golang-Server/src/validators"
 )
 
 type PaymentService struct {}
@@ -29,8 +30,8 @@ func (PaymentService) GetUserPaymentList(userId, page, size int) (interface{}, e
 	return paginationResponse, err
 }
 
-func (PaymentService) AddPayment(payment *models.Payment) error {
-	return nil
+func (PaymentService) AddPayment(request validators.PaymentRegisterRequest) (models.Payment, error) {
+	return models.Payment{}, nil
 }
 
 func (PaymentService) AddPaymentAll(payments []models.Payment) error {

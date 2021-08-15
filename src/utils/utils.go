@@ -16,3 +16,7 @@ func GetEnvVariable(key string) string {
 
 	return os.Getenv(key)
 }
+
+//func IsValidUser() bool {
+//	return true
+//}

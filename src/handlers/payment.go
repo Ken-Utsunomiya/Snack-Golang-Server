@@ -1,7 +1,10 @@
 package handlers
 
 import (
+	"Snack-Golang-Server/src/middlewares"
 	"Snack-Golang-Server/src/services"
+	"Snack-Golang-Server/src/validators"
+	"errors"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -32,7 +35,28 @@ func UserPaymentList(c *gin.Context) {
 }
 
 func PaymentCreate(c *gin.Context) {
+	paymentService := services.PaymentService{}
 
+	registerRequest := validators.PaymentRegisterRequest{}
+	if err := c.ShouldBindJSON(&registerRequest); err != nil {
+		c.Error(errors.New(middlewares.BadRequest)).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	//paymentUserId := registerRequest.UserID
+	//
+	//if !utils.IsValidUser(paymentUserId) {
+	//	c.Error(errors.New(middlewares.NotAuthorized)).SetType(gin.ErrorTypePublic)
+	//	return
+	//}
+
+	payment, err := paymentService.AddPayment(registerRequest)
+	if err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	c.JSON(http.StatusCreated, payment)
 }
 
 func PaymentAllCreate(c *gin.Context) {
