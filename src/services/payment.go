@@ -2,9 +2,12 @@ package services
 
 import (
 	"Snack-Golang-Server/src/database"
+	"Snack-Golang-Server/src/middlewares"
 	"Snack-Golang-Server/src/models"
 	"Snack-Golang-Server/src/utils"
 	"Snack-Golang-Server/src/validators"
+	"errors"
+	"gorm.io/gorm"
 )
 
 type PaymentService struct {}
@@ -31,7 +34,32 @@ func (PaymentService) GetUserPaymentList(userId, page, size int) (interface{}, e
 }
 
 func (PaymentService) AddPayment(request validators.PaymentRegisterRequest) (models.Payment, error) {
-	return models.Payment{}, nil
+	db := database.GetDB()
+
+	var payment models.Payment
+	err := db.Transaction(func(tx *gorm.DB) error {
+		user := models.User{}
+		userId := request.UserID
+		if err := tx.First(&user, userId).Error; err != nil {
+			return err
+		}
+
+		// decrease user balance
+		updatedBalance := user.Balance - request.PaymentAmount
+		if updatedBalance < 0 {
+			return errors.New(middlewares.BadRequest)
+		}
+
+		if err := tx.Model(&user).Update("balance", updatedBalance).Error; err != nil {
+			return err
+		}
+
+		// create a payment
+
+
+		return nil
+	})
+	return payment, err
 }
 
 func (PaymentService) AddPaymentAll(payments []models.Payment) error {
