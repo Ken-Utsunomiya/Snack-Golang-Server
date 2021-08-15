@@ -56,6 +56,12 @@ func (PaymentService) AddPayment(request validators.PaymentRegisterRequest) (mod
 		}
 
 		// create a payment
+		if err := tx.Create(&payment).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
+
+		// update transaction status
 
 
 		return nil
