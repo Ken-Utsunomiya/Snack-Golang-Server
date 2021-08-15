@@ -51,6 +51,7 @@ func (PaymentService) AddPayment(request validators.PaymentRegisterRequest) (mod
 		}
 
 		if err := tx.Model(&user).Update("balance", updatedBalance).Error; err != nil {
+			tx.Rollback()
 			return err
 		}
 
