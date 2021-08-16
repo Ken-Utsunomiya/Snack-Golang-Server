@@ -45,7 +45,7 @@ func (PaymentService) AddPayment(request validators.PaymentRegisterRequest) (mod
 		}
 
 		// decrease user balance
-		updatedBalance := user.Balance - request.PaymentAmount
+		updatedBalance := user.Balance - *request.PaymentAmount
 		if updatedBalance < 0 {
 			return errors.New(middlewares.BadRequest)
 		}
