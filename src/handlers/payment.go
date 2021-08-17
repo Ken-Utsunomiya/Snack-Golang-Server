@@ -60,5 +60,26 @@ func PaymentCreate(c *gin.Context) {
 }
 
 func PaymentAllCreate(c *gin.Context) {
+	paymentService := services.PaymentService{}
 
+	registerRequest := validators.PaymentRegisterRequest{}
+	if err := c.ShouldBindJSON(&registerRequest); err != nil {
+		c.Error(errors.New(middlewares.BadRequest)).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	//paymentUserId := registerRequest.UserID
+	//
+	//if !utils.IsValidUser(paymentUserId) {
+	//	c.Error(errors.New(middlewares.NotAuthorized)).SetType(gin.ErrorTypePublic)
+	//	return
+	//}
+
+	payment, err := paymentService.AddPaymentAll(registerRequest)
+	if err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	c.JSON(http.StatusCreated, payment)
 }

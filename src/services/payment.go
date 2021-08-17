@@ -79,6 +79,45 @@ func (PaymentService) AddPayment(request validators.PaymentRegisterRequest) (mod
 	return payment, err
 }
 
-func (PaymentService) AddPaymentAll(payments []models.Payment) error {
-	return nil
+func (PaymentService) AddPaymentAll(request validators.PaymentRegisterRequest) (models.Payment, error) {
+	db := database.GetDB()
+
+	var payment models.Payment
+	err := db.Transaction(func(tx *gorm.DB) error {
+		user := models.User{}
+		userId := request.UserID
+		if err := tx.First(&user, userId).Error; err != nil {
+			return err
+		}
+
+		// decrease user balance
+		if err := tx.Model(&user).Update("balance", 0).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
+
+		paymentAmount := user.Balance
+		request.PaymentAmount = &paymentAmount
+		payment = validators.RegisterRequestToPaymentModel(request)
+
+		// create a payment
+		if err := tx.Create(&payment).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
+
+		// update transaction status
+		paymentId := payment.ID
+		if err := tx.
+			Model(&models.Transaction{}).
+			Where("user_id = ? AND payment_id = ?", userId, 0).
+			Update("payment_id", paymentId).Error;
+		err != nil {
+			tx.Rollback()
+			return err
+		}
+
+		return nil
+	})
+	return payment, err
 }
