@@ -90,13 +90,14 @@ func (PaymentService) AddPaymentAll(request validators.PaymentRegisterRequest) (
 			return err
 		}
 
+		paymentAmount := user.Balance
+
 		// decrease user balance
 		if err := tx.Model(&user).Update("balance", 0).Error; err != nil {
 			tx.Rollback()
 			return err
 		}
 
-		paymentAmount := user.Balance
 		request.PaymentAmount = &paymentAmount
 		payment = validators.RegisterRequestToPaymentModel(request)
 
@@ -110,7 +111,7 @@ func (PaymentService) AddPaymentAll(request validators.PaymentRegisterRequest) (
 		paymentId := payment.ID
 		if err := tx.
 			Model(&models.Transaction{}).
-			Where("user_id = ? AND payment_id = ?", userId, 0).
+			Where("user_id = ? AND payment_id is null", userId).
 			Update("payment_id", paymentId).Error;
 		err != nil {
 			tx.Rollback()
