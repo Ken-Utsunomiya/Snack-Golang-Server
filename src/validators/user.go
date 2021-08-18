@@ -9,6 +9,11 @@ type UserRegisterRequest struct {
 	ImageURI	string `json:"image_uri" binding:"required"`
 }
 
+type UserUpdateRequest struct {
+	Balance int `json:"balance" binding:"required,min=0"`
+	IsAdmin bool `json:"is_admin" binding:"required"`
+}
+
 func RegisterRequestToUserModel(request UserRegisterRequest) models.User {
 	user := models.User{}
 	user.FirstName = request.FirstName
