@@ -22,3 +22,10 @@ func RegisterRequestToUserModel(request UserRegisterRequest) models.User {
 	user.ImageURI = request.ImageURI
 	return user
 }
+
+func UpdateRequestToUserModel(request UserUpdateRequest) models.User {
+	user := models.User{}
+	user.Balance = request.Balance
+	user.IsAdmin = request.IsAdmin
+	return user
+}
