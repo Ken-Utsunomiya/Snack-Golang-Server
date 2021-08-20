@@ -47,7 +47,22 @@ func SnackBatchCreate(c *gin.Context) {
 }
 
 func SnackBatchUpdate(c *gin.Context) {
+	snackBatchService := services.SnackBatchService{}
 
+	snackbatchUpdateRequest := validators.SnackBatchUpdateRequest{}
+	if err := c.ShouldBindJSON(&snackbatchUpdateRequest); err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	snackBatchId, _ := strconv.Atoi(c.Param("snack_batch_id"))
+	res, err := snackBatchService.UpdateSnackBatch(snackbatchUpdateRequest, snackBatchId)
+	if err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	c.JSON(http.StatusCreated, res)
 }
 
 func SnackBatchDelete(c *gin.Context) {
