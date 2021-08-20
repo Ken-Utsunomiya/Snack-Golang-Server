@@ -23,3 +23,10 @@ func RegisterRequestToSnackBatchModel(request SnackBatchRegisterRequest) models.
 	//snackbatch.ExpirationDTM = utils.TimeStamp(request.ExpirationDTM)
 	return snackbatch
 }
+
+func UpdateRequestToSnackBatchModel(request SnackBatchUpdateRequest, snackbatch *models.SnackBatch) {
+	snackbatch.Quantity = request.Quantity
+	if request.ExpirationDTM != nil {
+		snackbatch.ExpirationDTM = request.ExpirationDTM
+	}
+}
