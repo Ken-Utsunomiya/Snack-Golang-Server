@@ -44,8 +44,25 @@ func (UserService) AddUser(request validators.UserRegisterRequest) (models.User,
 	return user, err
 }
 
-func (UserService) UpdateUser(user *models.User) error {
-	return nil
+func (UserService) UpdateUser(request validators.UserUpdateRequest, id int) (models.User, error) {
+	db := database.GetDB()
+	user := models.User{}
+
+	if err := db.First(&user, id).Error; err != nil {
+		return user, err
+	}
+
+	if request.Balance == nil && request.IsAdmin == nil {
+		return user, nil
+	}
+
+	validators.UpdateRequestToUserModel(request, &user)
+
+	if err := db.Save(&user).Error; err != nil {
+		return user, err
+	}
+
+	return user, nil
 }
 
 func (UserService) DeleteUser(id uint) error {

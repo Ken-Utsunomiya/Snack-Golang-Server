@@ -65,7 +65,23 @@ func UserCreate(c *gin.Context) {
 }
 
 func UserUpdate(c *gin.Context) {
+	userService := services.UserService{}
 
+	userUpdateRequest := validators.UserUpdateRequest{}
+	if err := c.ShouldBindJSON(&userUpdateRequest); err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	userId, _ := strconv.Atoi(c.Param("user_id"))
+
+	res, err := userService.UpdateUser(userUpdateRequest, userId)
+	if err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	c.JSON(http.StatusCreated, res)
 }
 
 func UserDelete(c *gin.Context) {

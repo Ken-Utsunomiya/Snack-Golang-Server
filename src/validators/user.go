@@ -1,6 +1,8 @@
 package validators
 
-import "Snack-Golang-Server/src/models"
+import (
+	"Snack-Golang-Server/src/models"
+)
 
 type UserRegisterRequest struct {
 	FirstName	string `json:"first_name" binding:"required"`
@@ -10,8 +12,8 @@ type UserRegisterRequest struct {
 }
 
 type UserUpdateRequest struct {
-	Balance int `json:"balance" binding:"required,min=0"`
-	IsAdmin bool `json:"is_admin" binding:"required"`
+	Balance *int `json:"balance"`
+	IsAdmin *bool `json:"is_admin"`
 }
 
 func RegisterRequestToUserModel(request UserRegisterRequest) models.User {
@@ -23,9 +25,11 @@ func RegisterRequestToUserModel(request UserRegisterRequest) models.User {
 	return user
 }
 
-func UpdateRequestToUserModel(request UserUpdateRequest) models.User {
-	user := models.User{}
-	user.Balance = request.Balance
-	user.IsAdmin = request.IsAdmin
-	return user
+func UpdateRequestToUserModel(request UserUpdateRequest, user *models.User) {
+	if request.Balance != nil {
+		user.Balance = *request.Balance
+	}
+	if request.IsAdmin != nil {
+		user.IsAdmin = *request.IsAdmin
+	}
 }
