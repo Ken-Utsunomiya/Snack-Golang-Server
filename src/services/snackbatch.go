@@ -35,8 +35,25 @@ func (SnackBatchService) AddSnackBatch(request validators.SnackBatchRegisterRequ
 	return snackbatch, err
 }
 
-func (SnackBatchService) UpdateSnackBatch(snackBatch *models.SnackBatch) error {
-	return nil
+func (SnackBatchService) UpdateSnackBatch(request validators.SnackBatchUpdateRequest, id int) (models.SnackBatch, error) {
+	db := database.GetDB()
+	snackbatch := models.SnackBatch{}
+
+	if err := db.First(&snackbatch, id).Error; err != nil {
+		return snackbatch, err
+	}
+
+	if request == (validators.SnackBatchUpdateRequest{}) {
+		return snackbatch, nil
+	}
+
+	validators.UpdateRequestToSnackBatchModel(request, &snackbatch)
+
+	if err := db.Save(&snackbatch).Error; err != nil {
+		return snackbatch, err
+	}
+
+	return snackbatch, nil
 }
 
 func (SnackBatchService) DeleteSnackBatch(id int) error {
