@@ -12,7 +12,7 @@ type SnackBatchRegisterRequest struct {
 }
 
 type SnackBatchUpdateRequest struct {
-	Quantity	int	`json:"quantity" binding:"required"`
+	Quantity	int	`json:"quantity" binding:"min=0"`
 	ExpirationDTM	*time.Time	`json:"expiration_dtm"`
 }
 
