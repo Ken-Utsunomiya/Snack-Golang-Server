@@ -8,7 +8,7 @@ import (
 type SnackBatchRegisterRequest struct {
 	SnackID	int `json:"snack_id" binding:"required"`
 	Quantity	int `json:"quantity" binding:"required,min=1"`
-	ExpirationDTM	string `json:"expiration_dtm" binding:"required"`
+	ExpirationDTM	*time.Time `json:"expiration_dtm" binding:"required"`
 }
 
 type SnackBatchUpdateRequest struct {
@@ -20,7 +20,7 @@ func RegisterRequestToSnackBatchModel(request SnackBatchRegisterRequest) models.
 	snackbatch := models.SnackBatch{}
 	snackbatch.SnackID = request.SnackID
 	snackbatch.Quantity = request.Quantity
-	//snackbatch.ExpirationDTM = utils.TimeStamp(request.ExpirationDTM)
+	snackbatch.ExpirationDTM = request.ExpirationDTM
 	return snackbatch
 }
 
