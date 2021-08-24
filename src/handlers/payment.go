@@ -18,7 +18,7 @@ func UserPaymentList(c *gin.Context) {
 
 	_, err := userService.GetUser(userId)
 	if err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
@@ -27,7 +27,7 @@ func UserPaymentList(c *gin.Context) {
 
 	userPayment, err := paymentService.GetUserPaymentList(userId, page, size)
 	if err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
@@ -39,7 +39,7 @@ func PaymentCreate(c *gin.Context) {
 
 	registerRequest := validators.PaymentRegisterRequest{}
 	if err := c.ShouldBindJSON(&registerRequest); err != nil {
-		c.Error(errors.New(middlewares.BadRequest)).SetType(gin.ErrorTypePublic)
+		_ = c.Error(errors.New(middlewares.BadRequest)).SetType(gin.ErrorTypePublic)
 		return
 	}
 
@@ -52,7 +52,7 @@ func PaymentCreate(c *gin.Context) {
 
 	payment, err := paymentService.AddPayment(registerRequest)
 	if err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
@@ -64,7 +64,7 @@ func PaymentAllCreate(c *gin.Context) {
 
 	registerRequest := validators.PaymentRegisterRequest{}
 	if err := c.ShouldBindJSON(&registerRequest); err != nil {
-		c.Error(errors.New(middlewares.BadRequest)).SetType(gin.ErrorTypePublic)
+		_ = c.Error(errors.New(middlewares.BadRequest)).SetType(gin.ErrorTypePublic)
 		return
 	}
 
@@ -77,7 +77,7 @@ func PaymentAllCreate(c *gin.Context) {
 
 	payment, err := paymentService.AddPaymentAll(registerRequest)
 	if err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
