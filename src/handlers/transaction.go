@@ -18,7 +18,7 @@ func UserTransactionList(c *gin.Context) {
 
 	_, err := userService.GetUser(userId)
 	if err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
@@ -27,7 +27,7 @@ func UserTransactionList(c *gin.Context) {
 
 	userTransaction, err := transactionService.GetUserTransactionList(userId, page, size)
 	if err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
@@ -42,7 +42,7 @@ func UserTransactionRetrieve(c *gin.Context) {
 
 	userTransaction, err := transactionService.GetUserTransaction(userId, transactionId)
 	if err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
@@ -54,13 +54,13 @@ func TransactionCreate(c *gin.Context) {
 
 	registerRequest := validators.TransactionRegisterRequest{}
 	if err := c.ShouldBindJSON(&registerRequest); err != nil {
-		c.Error(errors.New(middlewares.BadRequest)).SetType(gin.ErrorTypePublic)
+		_ = c.Error(errors.New(middlewares.BadRequest)).SetType(gin.ErrorTypePublic)
 		return
 	}
 
 	res, err := transactionService.AddTransaction(registerRequest)
 	if err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
@@ -78,7 +78,7 @@ func PendingOrderList(c *gin.Context) {
 	userId, _ := strconv.Atoi(c.Param("user_id"))
 	_, err := userService.GetUser(userId)
 	if err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
@@ -87,7 +87,7 @@ func PendingOrderList(c *gin.Context) {
 
 	pendingOrders, err := transactionService.GetPendingOrderList(userId, page, size)
 	if err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
@@ -103,7 +103,7 @@ func PopularSnackList(c *gin.Context) {
 	transactionService := services.TransactionService{}
 	popularSnacks, err := transactionService.GetPopularSnackList(startDate, endDate, transactionTypeId, limit)
 	if err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
