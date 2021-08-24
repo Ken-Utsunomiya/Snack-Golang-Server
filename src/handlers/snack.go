@@ -10,7 +10,7 @@ func SnackList(c *gin.Context) {
 	snackService := services.SnackService{}
 	snackList, err := snackService.GetSnackList()
 	if err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
