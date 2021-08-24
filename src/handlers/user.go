@@ -14,7 +14,7 @@ func UserList(c *gin.Context) {
 	email := c.Query("email_address")
 	userList, err := userService.GetUserList(email)
 	if err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
@@ -27,7 +27,7 @@ func UserRetrieve(c *gin.Context) {
 	userId, _ := strconv.Atoi(c.Param("user_id"))
 	user, err := userService.GetUser(userId)
 	if err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
@@ -39,7 +39,7 @@ func UserCommonList(c *gin.Context) {
 
 	userCommonList, err := userService.GetUserCommonList()
 	if err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
@@ -51,13 +51,13 @@ func UserCreate(c *gin.Context) {
 
 	userRegisterRequest := validators.UserRegisterRequest{}
 	if err := c.ShouldBindJSON(&userRegisterRequest); err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
 	res, err := userService.AddUser(userRegisterRequest)
 	if err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
@@ -69,7 +69,7 @@ func UserUpdate(c *gin.Context) {
 
 	userUpdateRequest := validators.UserUpdateRequest{}
 	if err := c.ShouldBindJSON(&userUpdateRequest); err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
@@ -77,7 +77,7 @@ func UserUpdate(c *gin.Context) {
 
 	res, err := userService.UpdateUser(userUpdateRequest, userId)
 	if err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
