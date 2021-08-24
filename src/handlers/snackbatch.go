@@ -21,7 +21,7 @@ func SnackBatchList(c *gin.Context) {
 	snackBatchService := services.SnackBatchService{}
 	snackBatchList, err := snackBatchService.GetSnackBatchList(snackId, order)
 	if err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
@@ -33,13 +33,13 @@ func SnackBatchCreate(c *gin.Context) {
 
 	snackBatchRegisterRequest := validators.SnackBatchRegisterRequest{}
 	if err := c.ShouldBindJSON(&snackBatchRegisterRequest); err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
 	res, err := snackBatchService.AddSnackBatch(snackBatchRegisterRequest)
 	if err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
@@ -51,14 +51,14 @@ func SnackBatchUpdate(c *gin.Context) {
 
 	snackbatchUpdateRequest := validators.SnackBatchUpdateRequest{}
 	if err := c.ShouldBindJSON(&snackbatchUpdateRequest); err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
 	snackBatchId, _ := strconv.Atoi(c.Param("snack_batch_id"))
 	res, err := snackBatchService.UpdateSnackBatch(snackbatchUpdateRequest, snackBatchId)
 	if err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
@@ -70,7 +70,7 @@ func SnackBatchDelete(c *gin.Context) {
 
 	snackBatchId, _ := strconv.Atoi(c.Param("snack_batch_id"))
 	if err := snackBatchService.DeleteSnackBatch(snackBatchId); err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
