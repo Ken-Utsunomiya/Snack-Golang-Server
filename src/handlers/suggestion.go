@@ -13,7 +13,7 @@ func SuggestionList(c *gin.Context) {
 	suggestionService := services.SuggestionService{}
 	suggestionList, err := suggestionService.GetSuggestionList()
 	if err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
@@ -26,13 +26,13 @@ func SuggestionCreate(c *gin.Context) {
 	registerRequest := validators.SuggestionRegisterRequest{}
 
 	if err := c.ShouldBindJSON(&registerRequest); err != nil {
-		c.Error(errors.New(middlewares.BadRequest)).SetType(gin.ErrorTypePublic)
+		_ = c.Error(errors.New(middlewares.BadRequest)).SetType(gin.ErrorTypePublic)
 		return
 	}
 
 	res, err := suggestionService.AddSuggestion(registerRequest)
 	if err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
@@ -42,7 +42,7 @@ func SuggestionCreate(c *gin.Context) {
 func SuggestionDelete(c *gin.Context) {
 	suggestionService := services.SuggestionService{}
 	if err := suggestionService.DeleteSuggestion(); err != nil {
-		c.Error(err).SetType(gin.ErrorTypePublic)
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
