@@ -5,7 +5,6 @@ import (
 	"Snack-Golang-Server/src/models"
 	"Snack-Golang-Server/src/validators"
 	"gorm.io/gorm"
-	"time"
 )
 
 type SnackService struct {}
@@ -50,7 +49,8 @@ func (SnackService) AddSnack(request validators.SnackRegisterRequest) (models.Sn
 			}
 		}
 
-	}
+		return nil
+	})
 
 	return snack, err
 }
