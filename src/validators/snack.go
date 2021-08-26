@@ -2,6 +2,7 @@ package validators
 
 import (
 	"Snack-Golang-Server/src/models"
+	"time"
 )
 
 type SnackRegisterRequest struct {
@@ -9,9 +10,11 @@ type SnackRegisterRequest struct {
 	SnackTypeID	int	`json:"snack_type_id" binding:"required"`
 	Description	string	`json:"description" binding:"required"`
 	ImageURI	string	`json:"image_uri" binding:"required"`
+	Quantity int `json:"quantity" binding:"required"`
 	Price	int	`json:"price" binding:"required"`
 	IsActive	bool	`json:"is_active" binding:"required"`
 	OrderThreshold	*int	`json:"order_threshold"`
+	ExpirationDTM 	*time.Time 	`json:"expiration_dtm"`
 	LastUpdatedBy	string	`json:"last_updated_by" binding:"required"`
 }
 
