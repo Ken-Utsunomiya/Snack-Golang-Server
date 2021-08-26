@@ -59,6 +59,26 @@ func (SnackService) UpdateSnack(snack *models.Snack) error {
 	return nil
 }
 
-func (SnackService) DeleteSnack(id uint) error {
-	return nil
+func (SnackService) DeleteSnack(id int) error {
+	db := database.GetDB()
+
+	err := db.Transaction(func(tx *gorm.DB) error {
+		if err := tx.First(&models.Snack{}, id).Error; err != nil {
+			return err
+		}
+
+		if err := tx.Where("snack_id = ?", id).Delete(&models.SnackBatch{}).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
+
+		if err := tx.Delete(&models.Snack{}, id).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
+
+		return nil
+	})
+
+	return err
 }
