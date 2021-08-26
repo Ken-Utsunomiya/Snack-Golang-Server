@@ -5,6 +5,7 @@ import (
 	"Snack-Golang-Server/src/validators"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 func SnackList(c *gin.Context) {
@@ -43,5 +44,13 @@ func SnackUpdate(c *gin.Context) {
 }
 
 func SnackDelete(c *gin.Context) {
+	snackService := services.SnackService{}
 
+	snackId, _ := strconv.Atoi(c.Param("snack_id"))
+	if err := snackService.DeleteSnack(snackId); err != nil {
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	c.Status(http.StatusNoContent)
 }
