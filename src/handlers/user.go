@@ -85,5 +85,13 @@ func UserUpdate(c *gin.Context) {
 }
 
 func UserDelete(c *gin.Context) {
+	userService := services.UserService{}
 
+	userId, _ := strconv.Atoi(c.Param("user_id"))
+	if err := userService.DeleteUser(userId); err != nil {
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	c.Status(http.StatusNoContent)
 }
