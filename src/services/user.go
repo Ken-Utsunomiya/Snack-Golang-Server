@@ -4,6 +4,7 @@ import (
 	"Snack-Golang-Server/src/database"
 	"Snack-Golang-Server/src/models"
 	"Snack-Golang-Server/src/validators"
+	"gorm.io/gorm"
 )
 
 type UserService struct {}
@@ -65,6 +66,28 @@ func (UserService) UpdateUser(request validators.UserUpdateRequest, id int) (mod
 	return user, nil
 }
 
-func (UserService) DeleteUser(id uint) error {
-	return nil
+func (UserService) DeleteUser(id int) error {
+	db := database.GetDB()
+
+	var user models.User
+	err := db.Transaction(func(tx *gorm.DB) error {
+		if err := tx.First(&user, id).Error; err != nil {
+			return err
+		}
+
+		user.IsActive = false
+		if err := tx.Save(user).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
+
+		if err := tx.Delete(&user).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
+
+		return nil
+	})
+
+	return err
 }
