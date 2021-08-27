@@ -1,7 +1,7 @@
 package models
 
 import (
-	"time"
+	"gorm.io/gorm"
 )
 
 type User struct {
@@ -13,7 +13,7 @@ type User struct {
 	Balance 	int 	 	`json:"balance"       gorm:"column:balance;not null;default:0"`
 	IsAdmin 	bool 	 	`json:"is_admin"      gorm:"column:is_admin;not null;default:false"`
 	IsActive 	bool		`json:"is_active"     gorm:"column:is_active;not null;default:true"`
-	DeletedAt time.Time 	`json:"deleted_at"    gorm:"column:deleted_at"`
+	DeletedAt gorm.DeletedAt 	`json:"deleted_at"    gorm:"column:deleted_at"`
 }
 
 func (User) TableName() string {
