@@ -13,6 +13,10 @@ type TransactionRegisterRequest struct {
 	Quantity 					int `json:"quantity" binding:"required,min=1"`
 }
 
+type TransactionUpdateRequest struct {
+	TransactionTypeID int `json:"transaction_type_id" binding:"required,min=1,max=4"`
+}
+
 func RegisterRequestToTransactionModel(request TransactionRegisterRequest, snackName string) models.Transaction {
 	transaction := models.Transaction{}
 	transaction.UserID = request.UserID
