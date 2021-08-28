@@ -68,7 +68,23 @@ func TransactionCreate(c *gin.Context) {
 }
 
 func TransactionUpdate(c *gin.Context) {
+	transactionService := services.TransactionService{}
 
+	transactionUpdateRequest := validators.TransactionUpdateRequest{}
+	if err := c.ShouldBindJSON(&transactionUpdateRequest); err != nil {
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	transactionId, _ := strconv.Atoi(c.Param("transaction_id"))
+
+	res, err := transactionService.UpdateTransaction(transactionUpdateRequest, transactionId)
+	if err != nil {
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	c.JSON(http.StatusOK, res)
 }
 
 func PendingOrderList(c *gin.Context) {
