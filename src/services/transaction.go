@@ -91,8 +91,59 @@ func (TransactionService) AddTransaction(request validators.TransactionRegisterR
 	return transaction, err
 }
 
-func (TransactionService) UpdateTransaction(transaction *models.Transaction) error {
-	return nil
+func (TransactionService) UpdateTransaction(request validators.TransactionUpdateRequest, id int) (models.Transaction, error) {
+	db := database.GetDB()
+
+	var transaction models.Transaction
+	err := db.Transaction(func(tx *gorm.DB) error {
+		if err := tx.First(&transaction, id).Error; err != nil {
+			return err
+		}
+
+		//userId := transaction.UserID
+		//if !utils.IsValidUser(userId) {
+		//	return errors.New(middlewares.NotAuthorized)
+		//}
+
+		snack := models.Snack{}
+		snackName := transaction.SnackName
+		if err := tx.First(&snack, models.Snack{Name: snackName}).Error; err != nil {
+			return err
+		}
+
+		from := transaction.TransactionTypeID
+		to := request.TransactionTypeID
+		balance := transaction.TransactionAmount
+
+		if from == to {
+			return nil
+		} else if from == PURCHASE && to == CANCEL {
+			if transaction.PaymentID != nil {
+				return errors.New(middlewares.BadRequest)
+			}
+			// increase snackbatch quantity
+			// user balance decrement
+		} else if from == PENDING && to == PURCHASE {
+			// user balance increment
+		} else if from == PENDING && to == PENDING_CANCEL {
+			if transaction.PaymentID != nil {
+				return errors.New(middlewares.BadRequest)
+			}
+			// increase snackbatch quantity
+		} else {
+			return errors.New(middlewares.BadRequest)
+		}
+
+		transaction.TransactionTypeID = to
+		if err := tx.Save(&transaction).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
+
+		return nil
+	})
+
+	return transaction, err
 }
 
 func (TransactionService) GetPendingOrderList(userId, page, size int) (interface{}, error) {
