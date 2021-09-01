@@ -100,10 +100,14 @@ func (TransactionService) UpdateTransaction(request validators.TransactionUpdate
 			return err
 		}
 
-		//userId := transaction.UserID
+		userId := transaction.UserID
 		//if !utils.IsValidUser(userId) {
 		//	return errors.New(middlewares.NotAuthorized)
 		//}
+		user := models.User{}
+		if err := tx.First(&user, userId).Error; err != nil {
+			return err
+		}
 
 		snack := models.Snack{}
 		snackName := transaction.SnackName
@@ -113,7 +117,7 @@ func (TransactionService) UpdateTransaction(request validators.TransactionUpdate
 
 		from := transaction.TransactionTypeID
 		to := request.TransactionTypeID
-		balance := transaction.TransactionAmount
+		amount := transaction.TransactionAmount
 
 		if from == to {
 			return nil
@@ -125,6 +129,10 @@ func (TransactionService) UpdateTransaction(request validators.TransactionUpdate
 			// user balance decrement
 		} else if from == PENDING && to == PURCHASE {
 			// user balance increment
+			user.Balance -= amount
+			if err := tx.Save(&user).Error; err != nil {
+				return err
+			}
 		} else if from == PENDING && to == PENDING_CANCEL {
 			if transaction.PaymentID != nil {
 				return errors.New(middlewares.BadRequest)
