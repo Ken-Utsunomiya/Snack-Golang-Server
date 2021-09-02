@@ -68,7 +68,7 @@ func (TransactionService) AddTransaction(request validators.TransactionRegisterR
 			return err
 		}
 
-		// Update snack batch here
+		// decrease quantity in snackbatch here
 
 		if request.TransactionTypeID == Purchase {
 			balance := user.Balance + request.TransactionAmount
@@ -125,7 +125,10 @@ func (TransactionService) UpdateTransaction(request validators.TransactionUpdate
 			if transaction.PaymentID != nil {
 				return errors.New(middlewares.BadRequest)
 			}
-			// increase snackbatch quantity
+			snackBatchService := SnackBatchService{}
+			if err := snackBatchService.IncreaseQuantityInSnackBatch(snack.ID, transaction.Quantity, tx); err != nil {
+				return err
+			}
 			user.Balance -= amount
 			if err := tx.Save(&user).Error; err != nil {
 				return err
@@ -139,7 +142,10 @@ func (TransactionService) UpdateTransaction(request validators.TransactionUpdate
 			if transaction.PaymentID != nil {
 				return errors.New(middlewares.BadRequest)
 			}
-			// increase snackbatch quantity
+			snackBatchService := SnackBatchService{}
+			if err := snackBatchService.IncreaseQuantityInSnackBatch(snack.ID, transaction.Quantity, tx); err != nil {
+				return err
+			}
 		} else {
 			return errors.New(middlewares.BadRequest)
 		}

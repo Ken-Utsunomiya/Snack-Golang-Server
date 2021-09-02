@@ -5,6 +5,7 @@ import (
 	"Snack-Golang-Server/src/middlewares"
 	"Snack-Golang-Server/src/models"
 	"Snack-Golang-Server/src/validators"
+	"gorm.io/gorm"
 )
 
 type SnackBatchService struct {}
@@ -63,21 +64,20 @@ func (SnackBatchService) DeleteSnackBatch(id int) error {
 	return err
 }
 
-func (SnackBatchService) IncreaseQuantityInSnackBatch(snackId int, quantity int) error {
-	db := database.GetDB()
+func (SnackBatchService) IncreaseQuantityInSnackBatch(snackId int, quantity int, tx *gorm.DB) error {
 	snackbatch := models.SnackBatch{}
 
-	err := db.Order("expiration_dtm, snack_batch_id").First(&snackbatch, models.SnackBatch{SnackID: snackId}).Error
+	err := tx.Order("expiration_dtm, snack_batch_id").First(&snackbatch, models.SnackBatch{SnackID: snackId}).Error
 	if err.Error() == middlewares.RecordNotFound {
 		request := validators.SnackBatchRegisterRequest{SnackID: snackId, Quantity: quantity, ExpirationDTM: nil}
 		snackbatch = validators.RegisterRequestToSnackBatchModel(request)
-		if err := db.Create(&snackbatch).Error; err != nil {
+		if err := tx.Create(&snackbatch).Error; err != nil {
 			return err
 		}
 		return nil
 	} else if snackbatch != (models.SnackBatch{}) {
 		snackbatch.Quantity += quantity
-		if err := db.Save(&snackbatch).Error; err != nil {
+		if err := tx.Save(&snackbatch).Error; err != nil {
 			return err
 		}
 		return nil
