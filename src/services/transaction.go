@@ -10,10 +10,10 @@ import (
 	"gorm.io/gorm"
 )
 const (
-	PURCHASE = 1
-	CANCEL = 2
-	PENDING = 3
-	PENDING_CANCEL = 4
+	Purchase 			= 1
+	Cancel        = 2
+	Pending       = 3
+	PendingCancel = 4
 )
 
 type TransactionService struct {}
@@ -70,7 +70,7 @@ func (TransactionService) AddTransaction(request validators.TransactionRegisterR
 
 		// Update snack batch here
 
-		if request.TransactionTypeID == PURCHASE {
+		if request.TransactionTypeID == Purchase {
 			balance := user.Balance + request.TransactionAmount
 			if err := tx.Model(&user).Update("balance", balance).Error; err != nil {
 				tx.Rollback()
@@ -121,7 +121,7 @@ func (TransactionService) UpdateTransaction(request validators.TransactionUpdate
 
 		if from == to {
 			return nil
-		} else if from == PURCHASE && to == CANCEL {
+		} else if from == Purchase && to == Cancel {
 			if transaction.PaymentID != nil {
 				return errors.New(middlewares.BadRequest)
 			}
@@ -130,12 +130,12 @@ func (TransactionService) UpdateTransaction(request validators.TransactionUpdate
 			if err := tx.Save(&user).Error; err != nil {
 				return err
 			}
-		} else if from == PENDING && to == PURCHASE {
+		} else if from == Pending && to == Purchase {
 			user.Balance += amount
 			if err := tx.Save(&user).Error; err != nil {
 				return err
 			}
-		} else if from == PENDING && to == PENDING_CANCEL {
+		} else if from == Pending && to == PendingCancel {
 			if transaction.PaymentID != nil {
 				return errors.New(middlewares.BadRequest)
 			}
@@ -160,7 +160,7 @@ func (TransactionService) GetPendingOrderList(userId, page, size int) (interface
 	var count int64
 	db := database.GetDB().
 		Model(&models.Transaction{}).
-		Where("user_id = ? AND transaction_type_id = ?", userId, PENDING).
+		Where("user_id = ? AND transaction_type_id = ?", userId, Pending).
 		Count(&count)
 
 	pendingOrderList := make([]models.Transaction, 0)
