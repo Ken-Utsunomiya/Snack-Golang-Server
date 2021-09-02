@@ -2,6 +2,7 @@ package services
 
 import (
 	"Snack-Golang-Server/src/database"
+	"Snack-Golang-Server/src/middlewares"
 	"Snack-Golang-Server/src/models"
 	"Snack-Golang-Server/src/validators"
 )
@@ -59,5 +60,28 @@ func (SnackBatchService) UpdateSnackBatch(request validators.SnackBatchUpdateReq
 func (SnackBatchService) DeleteSnackBatch(id int) error {
 	db := database.GetDB()
 	err := db.Delete(&models.SnackBatch{}, id).Error
+	return err
+}
+
+func (SnackBatchService) IncreaseQuantityInSnackBatch(snackId int, quantity int) error {
+	db := database.GetDB()
+	snackbatch := models.SnackBatch{}
+
+	err := db.Order("expiration_dtm, snack_batch_id").First(&snackbatch, models.SnackBatch{SnackID: snackId}).Error
+	if err.Error() == middlewares.RecordNotFound {
+		request := validators.SnackBatchRegisterRequest{SnackID: snackId, Quantity: quantity, ExpirationDTM: nil}
+		snackbatch = validators.RegisterRequestToSnackBatchModel(request)
+		if err := db.Create(&snackbatch).Error; err != nil {
+			return err
+		}
+		return nil
+	} else if snackbatch != (models.SnackBatch{}) {
+		snackbatch.Quantity += quantity
+		if err := db.Save(&snackbatch).Error; err != nil {
+			return err
+		}
+		return nil
+	}
+
 	return err
 }
