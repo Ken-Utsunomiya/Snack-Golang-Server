@@ -160,7 +160,7 @@ func (TransactionService) GetPendingOrderList(userId, page, size int) (interface
 	var count int64
 	db := database.GetDB().
 		Model(&models.Transaction{}).
-		Where("user_id = ? AND transaction_type_id = ?", userId, 3).
+		Where("user_id = ? AND transaction_type_id = ?", userId, PENDING).
 		Count(&count)
 
 	pendingOrderList := make([]models.Transaction, 0)
