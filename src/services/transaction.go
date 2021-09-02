@@ -126,13 +126,11 @@ func (TransactionService) UpdateTransaction(request validators.TransactionUpdate
 				return errors.New(middlewares.BadRequest)
 			}
 			// increase snackbatch quantity
-			// user balance decrement
 			user.Balance -= amount
 			if err := tx.Save(&user).Error; err != nil {
 				return err
 			}
 		} else if from == PENDING && to == PURCHASE {
-			// user balance increment
 			user.Balance += amount
 			if err := tx.Save(&user).Error; err != nil {
 				return err
