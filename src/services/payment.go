@@ -65,11 +65,11 @@ func (PaymentService) AddPayment(request validators.PaymentRegisterRequest) (mod
 
 		// update transaction status
 		paymentId := payment.ID
-		if err := tx.
+		err := tx.
 			Model(&models.Transaction{}).
 			Where("transaction_id IN ?", request.TransactionIDs).
-			Update("payment_id", paymentId).Error;
-		err != nil {
+			Update("payment_id", paymentId).Error
+		if err != nil {
 			tx.Rollback()
 			return err
 		}
@@ -109,11 +109,11 @@ func (PaymentService) AddPaymentAll(request validators.PaymentRegisterRequest) (
 
 		// update transaction status
 		paymentId := payment.ID
-		if err := tx.
+		err := tx.
 			Model(&models.Transaction{}).
 			Where("user_id = ? AND payment_id is null", userId).
-			Update("payment_id", paymentId).Error;
-		err != nil {
+			Update("payment_id", paymentId).Error
+		if err != nil {
 			tx.Rollback()
 			return err
 		}
