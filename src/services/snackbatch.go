@@ -33,6 +33,7 @@ func (SnackBatchService) AddSnackBatch(request validators.SnackBatchRegisterRequ
 
 	snackbatch := validators.RegisterRequestToSnackBatchModel(request)
 
+	// create a new snackbatch
 	err := db.Model(models.SnackBatch{}).Create(&snackbatch).Error
 	return snackbatch, err
 }
@@ -49,6 +50,7 @@ func (SnackBatchService) UpdateSnackBatch(request validators.SnackBatchUpdateReq
 		return snackbatch, nil
 	}
 
+	// convert update request to snackbatch model
 	validators.UpdateRequestToSnackBatchModel(request, &snackbatch)
 
 	if err := db.Save(&snackbatch).Error; err != nil {
