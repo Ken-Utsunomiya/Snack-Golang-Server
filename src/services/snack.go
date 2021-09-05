@@ -11,6 +11,7 @@ type SnackService struct {}
 
 func (SnackService) GetSnackList() ([]models.Snack, error) {
 	db := database.GetDB()
+
 	snacks := make([]models.Snack, 0)
 	err := db.Find(&snacks).Error
 	return snacks, err
