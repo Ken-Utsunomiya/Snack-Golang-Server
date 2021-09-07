@@ -32,16 +32,11 @@ func (SnackService) AddSnack(request validators.SnackRegisterRequest) (models.Sn
 		if request.Quantity > 0 {
 			snackId := snack.ID
 			quantity := request.Quantity
-			//var expirationDTM time.Time
-			//if request.ExpirationDTM != nil {
-			//	expirationDTM = *request.ExpirationDTM
-			//} else {
-			//	expirationDTM = nil
-			//}
+			expirationDTM := request.ExpirationDTM
 			snackbatch := models.SnackBatch{
 				SnackID: snackId,
 				Quantity: quantity,
-				ExpirationDTM: nil,
+				ExpirationDTM: expirationDTM,
 			}
 
 			if err := tx.Model(models.SnackBatch{}).Create(snackbatch).Error; err != nil {
