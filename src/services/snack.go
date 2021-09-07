@@ -38,7 +38,7 @@ func (SnackService) AddSnack(request validators.SnackRegisterRequest) (models.Sn
 				ExpirationDTM: expirationDTM,
 			}
 
-			if err := tx.Model(models.SnackBatch{}).Create(snackbatch).Error; err != nil {
+			if err := tx.Model(models.SnackBatch{}).Create(&snackbatch).Error; err != nil {
 				tx.Rollback()
 				return err
 			}
