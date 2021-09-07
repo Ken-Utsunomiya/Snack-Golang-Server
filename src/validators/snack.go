@@ -10,7 +10,7 @@ type SnackRegisterRequest struct {
 	SnackTypeID	int	`json:"snack_type_id" binding:"required"`
 	Description	string	`json:"description" binding:"required"`
 	ImageURI	string	`json:"image_uri" binding:"required"`
-	Quantity int `json:"quantity" binding:"required"`
+	Quantity int `json:"quantity" binding:"min=0"`
 	Price	int	`json:"price" binding:"required"`
 	IsActive	bool	`json:"is_active" binding:"required"`
 	OrderThreshold	*int	`json:"order_threshold"`
@@ -27,9 +27,9 @@ func RegisterRequestToSnackModel(request SnackRegisterRequest) models.Snack {
 	snack.Price = request.Price
 	snack.IsActive = request.IsActive
 	snack.LastUpdatedBy = request.LastUpdatedBy
-	snack.OrderThreshold = request.OrderThreshold
 	if request.OrderThreshold != nil {
 		snack.OrderThreshold = request.OrderThreshold
 	}
+	snack.LastUpdatedDTM = time.Now()
 	return snack
 }

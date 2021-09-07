@@ -23,8 +23,7 @@ func (SnackService) AddSnack(request validators.SnackRegisterRequest) (models.Sn
 	var snack models.Snack
 	err := db.Transaction(func(tx *gorm.DB) error {
 		snack = validators.RegisterRequestToSnackModel(request)
-
-		if err := tx.Model(models.Snack{}).Create(snack).Error; err != nil {
+		if err := tx.Model(models.Snack{}).Create(&snack).Error; err != nil {
 			tx.Rollback()
 			return err
 		}
