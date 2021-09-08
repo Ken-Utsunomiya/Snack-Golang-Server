@@ -18,6 +18,17 @@ type SnackRegisterRequest struct {
 	LastUpdatedBy	string	`json:"last_updated_by" binding:"required"`
 }
 
+type SnackUpdateRequest struct {
+	SnackName	string	`json:"snack_name"`
+	SnackTypeID	int	`json:"snack_type_id"`
+	Description	string	`json:"description"`
+	ImageURI	string	`json:"image_uri"`
+	Price	int	`json:"price"`
+	IsActive	bool	`json:"is_active"`
+	OrderThreshold	*int	`json:"order_threshold"`
+	LastUpdatedBy	string	`json:"last_updated_by"`
+}
+
 func RegisterRequestToSnackModel(request SnackRegisterRequest) models.Snack {
 	snack := models.Snack{}
 	snack.Name = request.SnackName
