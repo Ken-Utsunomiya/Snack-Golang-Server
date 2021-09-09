@@ -50,8 +50,25 @@ func (SnackService) AddSnack(request validators.SnackRegisterRequest) (models.Sn
 	return snack, err
 }
 
-func (SnackService) UpdateSnack(snack *models.Snack) error {
-	return nil
+func (SnackService) UpdateSnack(request validators.SnackUpdateRequest, id int) (models.Snack, error) {
+	db := database.GetDB()
+
+	snack := models.Snack{}
+	if err := db.First(&snack, id).Error; err != nil {
+		return snack, err
+	}
+
+	if request == (validators.SnackUpdateRequest{}) {
+		return snack, nil
+	}
+
+	validators.UpdateRequestToSnackModel(request, &snack)
+
+	if err := db.Save(&snack).Error; err != nil {
+		return snack, err
+	}
+
+	return snack, nil
 }
 
 func (SnackService) DeleteSnack(id int) error {
