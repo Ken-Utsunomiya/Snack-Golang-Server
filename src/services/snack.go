@@ -62,6 +62,7 @@ func (SnackService) UpdateSnack(request validators.SnackUpdateRequest, id int) (
 		return snack, nil
 	}
 
+	// from request to snack model
 	validators.UpdateRequestToSnackModel(request, &snack)
 
 	if err := db.Save(&snack).Error; err != nil {
