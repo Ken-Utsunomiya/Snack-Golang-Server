@@ -19,14 +19,14 @@ type SnackRegisterRequest struct {
 }
 
 type SnackUpdateRequest struct {
-	SnackName	string	`json:"snack_name"`
-	SnackTypeID	int	`json:"snack_type_id"`
-	Description	string	`json:"description"`
-	ImageURI	string	`json:"image_uri"`
-	Price	int	`json:"price"`
-	IsActive	bool	`json:"is_active"`
+	SnackName	*string	`json:"snack_name"`
+	SnackTypeID	*int	`json:"snack_type_id"`
+	Description	*string	`json:"description"`
+	ImageURI	*string	`json:"image_uri"`
+	Price	*int	`json:"price"`
+	IsActive	*bool	`json:"is_active"`
 	OrderThreshold	*int	`json:"order_threshold"`
-	LastUpdatedBy	string	`json:"last_updated_by"`
+	LastUpdatedBy	*string	`json:"last_updated_by"`
 }
 
 func RegisterRequestToSnackModel(request SnackRegisterRequest) models.Snack {
@@ -43,4 +43,32 @@ func RegisterRequestToSnackModel(request SnackRegisterRequest) models.Snack {
 	}
 	snack.LastUpdatedDTM = time.Now()
 	return snack
+}
+
+func UpdateRequestToSnackModel(request SnackUpdateRequest, snack *models.Snack) {
+	if request.SnackName != nil {
+		snack.Name = *request.SnackName
+	}
+	if request.SnackTypeID != nil {
+		snack.SnackTypeID = *request.SnackTypeID
+	}
+	if request.Description != nil {
+		snack.Description = *request.Description
+	}
+	if request.ImageURI != nil {
+		snack.ImageURI = *request.ImageURI
+	}
+	if request.Price != nil {
+		snack.Price = *request.Price
+	}
+	if request.IsActive != nil {
+		snack.IsActive = *request.IsActive
+	}
+	if request.OrderThreshold != nil {
+		snack.OrderThreshold = request.OrderThreshold
+	}
+	if request.LastUpdatedBy != nil {
+		snack.LastUpdatedBy = *request.LastUpdatedBy
+	}
+	snack.LastUpdatedDTM = time.Now()
 }
