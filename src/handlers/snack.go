@@ -40,7 +40,23 @@ func SnackCreate(c *gin.Context) {
 }
 
 func SnackUpdate(c *gin.Context) {
+	snackService := services.SnackService{}
 
+	snackUpdateRequest := validators.SnackUpdateRequest{}
+	if err := c.ShouldBindJSON(&snackUpdateRequest); err != nil {
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	snackId, _ := strconv.Atoi(c.Param("snack_id"))
+
+	res, err := snackService.UpdateSnack(snackUpdateRequest, snackId)
+	if err != nil {
+		_ = c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	c.JSON(http.StatusCreated, res)
 }
 
 func SnackDelete(c *gin.Context) {
